@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from configs.database import Base, engine
-from configs.conf import settings
-from user.routers import user
-from auth_credential.routers import auth_credential
-from authen.routers import authen
+from app.configs.database import Base, engine
+from app.configs.conf import settings
+from app.api_emp import user
+from app.api_emp import auth_credential
+from app.api_emp import authen
 import uvicorn
 
 
