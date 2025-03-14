@@ -1,10 +1,11 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.configs.database import Base, engine
-from app.configs.conf import settings
-from app.api_emp import user
-from app.api_emp import auth_credential
-from app.api_emp import authen
+from configs.database import Base, engine
+from role.routers import role
+from user.routers import user
+from user_role.routers import user_role
+from auth_credential.routers import auth_credential
+from authen.routers import authen
 import uvicorn
 
 
@@ -12,13 +13,9 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-origins = [
-    '*'
-]
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -30,11 +27,13 @@ async def root():
     return {"message": "Hello World"}
 
 
+app.router.include_router(role.router)
 app.router.include_router(user.router)
+app.router.include_router(user_role.router)
 app.router.include_router(auth_credential.router)
 app.router.include_router(authen.router)
 
 
-if __name__ == "__main__":
-    uvicorn.run(app, host=settings.host, port=settings.port)
+# if __name__ == "__main__":
+#     uvicorn.run(app, host=settings.host, port=settings.port)
     
