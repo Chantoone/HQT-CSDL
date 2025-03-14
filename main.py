@@ -6,6 +6,8 @@ from user.routers import user
 from user_role.routers import user_role
 from auth_credential.routers import auth_credential
 from authen.routers import authen
+from cinema.routers import cinema
+from film.routers import film
 import uvicorn
 
 
@@ -32,6 +34,8 @@ app.router.include_router(user.router)
 app.router.include_router(user_role.router)
 app.router.include_router(auth_credential.router)
 app.router.include_router(authen.router)
+app.router.include_router(cinema.router)
+app.router.include_router(film.router)
 
 
 # if __name__ == "__main__":
