@@ -1,5 +1,6 @@
 from sqlalchemy import Boolean, Column, Integer, String, text
 from sqlalchemy.sql.sqltypes import TIMESTAMP
+from sqlalchemy.orm import relationship
 from configs.database import Base
 
 
@@ -12,3 +13,5 @@ class Cinema(Base):
     phone_number = Column(String, nullable=False)
     is_active = Column(Boolean, default=True)
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
+
+    users = relationship("User", back_populates="cinema", passive_deletes=True)

@@ -7,7 +7,6 @@ class CinemaBase(BaseModel):
     name: Optional[str] = None
     address: Optional[str] = None
     phone_number: Optional[str] = None
-    is_active: Optional[bool] = None
 
 
 class CinemaCreate(CinemaBase):
@@ -22,6 +21,7 @@ class CinemaUpdate(CinemaBase):
 
 class CinemaResponse(CinemaBase):
     id: int
+    is_active: Optional[bool] = None
     created_at: datetime
 
     class Config:

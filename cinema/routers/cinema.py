@@ -143,7 +143,6 @@ async def create_cinema(
 
         db.add(cinema)
         db.commit()
-        db.refresh(cinema)
 
         return JSONResponse(
             status_code=status.HTTP_201_CREATED,
