@@ -8,6 +8,7 @@ from auth_credential.routers import auth_credential
 from authen.routers import authen
 from cinema.routers import cinema
 from film.routers import film
+from food.routers import food
 import uvicorn
 
 
@@ -36,6 +37,7 @@ app.router.include_router(auth_credential.router)
 app.router.include_router(authen.router)
 app.router.include_router(cinema.router)
 app.router.include_router(film.router)
+app.router.include_router(food.router)
 
 
 # if __name__ == "__main__":
