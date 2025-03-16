@@ -15,6 +15,7 @@ from showtime.routers import showtime
 from promotion.routers import promotion
 from seat.routers import seat
 from ticket.routers import ticket
+from bill.routers import bill
 import uvicorn
 
 
@@ -50,6 +51,7 @@ app.router.include_router(showtime.router)
 app.router.include_router(promotion.router)
 app.router.include_router(seat.router)
 app.router.include_router(ticket.router)
+app.router.include_router(bill.router)
 
 
 # if __name__ == "__main__":

@@ -17,3 +17,5 @@ class Ticket(Base):
 
     showtime = relationship("Showtime", back_populates="ticket", passive_deletes=True)
     seat = relationship("Seat", back_populates="ticket", passive_deletes=True)
+
+    bill = relationship("Bill", back_populates="ticket", passive_deletes=True)

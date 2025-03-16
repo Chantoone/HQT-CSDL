@@ -6,6 +6,9 @@ class FoodBase(BaseModel):
     name: Optional[str]
     price: Optional[int]
 
+    class Config:
+        from_attributes = True
+
 
 class FoodCreate(FoodBase):
     name: str
