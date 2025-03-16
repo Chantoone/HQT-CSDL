@@ -16,3 +16,4 @@ class Promotion(Base):
 
     staff_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
     staff = relationship("User", back_populates="promotion", passive_deletes=True)
+    bill_prom = relationship("BillProm", back_populates="prom", passive_deletes=True)

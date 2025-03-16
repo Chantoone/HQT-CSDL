@@ -20,3 +20,4 @@ class Bill(Base):
     staff = relationship("User", back_populates="bill", passive_deletes=True)
     food = relationship("Food", back_populates="bill", passive_deletes=True)
     ticket = relationship("Ticket", back_populates="bill", passive_deletes=True)
+    bill_prom = relationship("BillProm", back_populates="bill", passive_deletes=True)
