@@ -19,3 +19,4 @@ class Film(Base):
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
 
     rates = relationship("Rate", back_populates="film", passive_deletes=True)
+    showtime = relationship("Showtime", back_populates="film", passive_deletes=True)

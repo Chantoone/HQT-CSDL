@@ -142,6 +142,7 @@ async def create_food(
         )
     
     except SQLAlchemyError as e:
+        db.rollback()
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail=f"Lỗi cơ sở dữ liệu: {str(e)}"

@@ -152,6 +152,7 @@ def create_room(
         )
     
     except SQLAlchemyError as e:
+        db.rollback()
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT, 
             detail=str(e)
@@ -184,6 +185,7 @@ def update_room(
         )
     
     except SQLAlchemyError as e:
+        db.rollback()
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT, 
             detail=str(e)
@@ -214,6 +216,7 @@ def delete_room(
         )
     
     except SQLAlchemyError as e:
+        db.rollback()
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT, 
             detail=str(e)
@@ -236,6 +239,7 @@ def delete_many_rooms(
         )
     
     except SQLAlchemyError as e:
+        db.rollback()
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT, 
             detail=str(e)
