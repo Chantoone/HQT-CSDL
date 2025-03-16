@@ -12,6 +12,7 @@ from food.routers import food
 from rate.routers import rate
 from room.routers import room
 from showtime.routers import showtime
+from promotion.routers import promotion
 import uvicorn
 
 
@@ -44,6 +45,7 @@ app.router.include_router(food.router)
 app.router.include_router(rate.router)
 app.router.include_router(room.router)
 app.router.include_router(showtime.router)
+app.router.include_router(promotion.router)
 
 
 # if __name__ == "__main__":

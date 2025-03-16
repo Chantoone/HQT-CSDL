@@ -17,9 +17,11 @@ from auth_credential.models.auth_credential import AuthCredential
 from role.models.role import Role
 from user_role.models.user_role import UserRole
 from cinema.models.cinema import Cinema
+from room.models.room import Room
 from film.models.film import Film
 from food.models.food import Food
 from rate.models.rate import Rate
+from promotion.models.promotion import Promotion
 
 
 # Import any other models that you have
