@@ -22,3 +22,4 @@ class User(Base):
     cinema = relationship("Cinema", back_populates="users", passive_deletes=True)
     user_roles = relationship("UserRole", back_populates="user", passive_deletes=True)
     rates = relationship("Rate", back_populates="user", passive_deletes=True)
+    promotion = relationship("Promotion", back_populates="staff", passive_deletes=True)
