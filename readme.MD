@@ -1,3 +1,7 @@
+## Create and active the virtual environment
+python -m venv .venv
+.venv/scripts/activate
+
 ## Install dependence
 pip install -r requirements.txt
 
