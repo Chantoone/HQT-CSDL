@@ -17,3 +17,4 @@ class Room(Base):
 
     cinema = relationship("Cinema", back_populates="room", passive_deletes=True)
     showtime = relationship("Showtime", back_populates="room", passive_deletes=True)
+    seat = relationship("Seat", back_populates="room", passive_deletes=True)
