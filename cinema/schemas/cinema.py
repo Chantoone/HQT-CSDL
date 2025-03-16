@@ -8,6 +8,9 @@ class CinemaBase(BaseModel):
     address: Optional[str] = None
     phone_number: Optional[str] = None
 
+    class Config:
+        from_attributes = True
+
 
 class CinemaCreate(CinemaBase):
     name: str

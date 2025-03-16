@@ -15,3 +15,4 @@ class Cinema(Base):
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
 
     users = relationship("User", back_populates="cinema", passive_deletes=True)
+    room = relationship("Room", back_populates="cinema", passive_deletes=True)

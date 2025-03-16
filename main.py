@@ -10,6 +10,7 @@ from cinema.routers import cinema
 from film.routers import film
 from food.routers import food
 from rate.routers import rate
+from room.routers import room
 import uvicorn
 
 
@@ -40,6 +41,7 @@ app.router.include_router(cinema.router)
 app.router.include_router(film.router)
 app.router.include_router(food.router)
 app.router.include_router(rate.router)
+app.router.include_router(room.router)
 
 
 # if __name__ == "__main__":
