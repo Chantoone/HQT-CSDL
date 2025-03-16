@@ -17,3 +17,4 @@ class Showtime(Base):
 
     film = relationship("Film", back_populates="showtime", passive_deletes=True)
     room = relationship("Room", back_populates="showtime", passive_deletes=True)
+    ticket = relationship("Ticket", back_populates="showtime", passive_deletes=True)

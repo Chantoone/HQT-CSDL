@@ -36,6 +36,16 @@ class ShowtimeResponse(ShowtimeBase):
         from_attributes = True
 
 
+class ShowtimeResponseWithoutRoom(ShowtimeBase):
+    id: int
+    film: Optional[FilmResponse] = None
+    room: Optional[RoomResponse] = None
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
 class ListShowtimeResponse(BaseModel):
     showtimes: List[ShowtimeResponse]
     total_data: int
