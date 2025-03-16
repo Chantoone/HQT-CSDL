@@ -17,7 +17,7 @@ router = APIRouter(
 )
 
 
-@router.get("/", 
+@router.get("/all", 
             response_model=ListPromotionResponse)
 async def get_all_promotion(
         db: Session = Depends(get_db)
