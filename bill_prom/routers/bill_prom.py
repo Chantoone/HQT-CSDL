@@ -18,7 +18,7 @@ router = APIRouter(
 )
 
 
-@router.get("/", 
+@router.get("/all", 
             response_model=ListBillPromResponse, 
             status_code=status.HTTP_200_OK)
 def get_all_bill_proms(

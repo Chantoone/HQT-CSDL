@@ -21,3 +21,4 @@ class Bill(Base):
     food = relationship("Food", back_populates="bill", passive_deletes=True)
     ticket = relationship("Ticket", back_populates="bill", passive_deletes=True)
     bill_prom = relationship("BillProm", back_populates="bill", passive_deletes=True)
+    user_bill = relationship("UserBill", back_populates="bill", passive_deletes=True)

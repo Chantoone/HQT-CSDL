@@ -24,3 +24,4 @@ class User(Base):
     rates = relationship("Rate", back_populates="user", passive_deletes=True)
     promotion = relationship("Promotion", back_populates="staff", passive_deletes=True)
     bill = relationship("Bill", back_populates="staff", passive_deletes=True)
+    user_bill = relationship("UserBill", back_populates="user", passive_deletes=True)

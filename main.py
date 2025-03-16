@@ -17,6 +17,7 @@ from seat.routers import seat
 from ticket.routers import ticket
 from bill.routers import bill
 from bill_prom.routers import bill_prom
+from user_bill.routers import user_bill
 import uvicorn
 
 
@@ -54,6 +55,7 @@ app.router.include_router(seat.router)
 app.router.include_router(ticket.router)
 app.router.include_router(bill.router)
 app.router.include_router(bill_prom.router)
+app.router.include_router(user_bill.router)
 
 
 # if __name__ == "__main__":
