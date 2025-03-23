@@ -11,7 +11,6 @@ class FilmBase(BaseModel):
     author: Optional[str] = None
     genre: Optional[str] = None
     poster_path: Optional[str] = None
-    is_active: Optional[bool] = None
 
 
 class FilmCreate(FilmBase):
@@ -24,6 +23,7 @@ class FilmUpdate(FilmBase):
 
 class FilmResponse(FilmBase):
     id: int
+    is_active: Optional[bool] = None
     created_at: datetime
 
     class Config:

@@ -12,3 +12,5 @@ class Food(Base):
     price = Column(Integer, nullable=True)
 
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
+
+    bill = relationship("Bill", back_populates="food", passive_deletes=True)

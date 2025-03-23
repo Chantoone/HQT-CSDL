@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime, date
+from cinema.schemas.cinema import CinemaBase
 
 
 class UserBase(BaseModel):
@@ -9,6 +10,10 @@ class UserBase(BaseModel):
     phone_number: Optional[str] = None
     birthdate: Optional[date] = None
     address: Optional[str] = None
+    cinema: Optional[CinemaBase] = None
+
+    class Config:
+        from_attributes = True
 
 
 class UserCreate(UserBase):
@@ -18,16 +23,13 @@ class UserCreate(UserBase):
 
 class UserUpdate(UserBase):
     full_name: Optional[str] = None
+    cinema_id: Optional[int] = None
 
 
-class UserResponse(BaseModel):
+class UserResponse(UserBase):
     id: int
     full_name: str
     username: str
-    email: Optional[str] = None
-    phone_number: Optional[str] = None
-    birthdate: Optional[date] = None
-    address: Optional[str] = None
     is_active: bool
     created_at: datetime
 

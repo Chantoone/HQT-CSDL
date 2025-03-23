@@ -157,6 +157,7 @@ async def create_film(
         return film
     
     except SQLAlchemyError as e:
+        db.rollback()
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail=f"Lỗi cơ sở dữ liệu: {str(e)}"
@@ -197,6 +198,7 @@ async def update_film(
         return film
     
     except SQLAlchemyError as e:
+        db.rollback()
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail=f"Lỗi cơ sở dữ liệu: {str(e)}"
@@ -228,13 +230,14 @@ async def delete_film(
         )
     
     except SQLAlchemyError as e:
+        db.rollback()
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail=f"Lỗi cơ sở dữ liệu: {str(e)}"
         )
     
 
-@router.delete("/delete",
+@router.delete("/delete-many",
                status_code=status.HTTP_200_OK)
 async def delete_films(
         film_ids: List[int],
@@ -260,6 +263,7 @@ async def delete_films(
         )
     
     except SQLAlchemyError as e:
+        db.rollback()
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail=f"Lỗi cơ sở dữ liệu: {str(e)}"
@@ -282,6 +286,7 @@ async def delete_all_films(
         )
     
     except SQLAlchemyError as e:
+        db.rollback()
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail=f"Lỗi cơ sở dữ liệu: {str(e)}"
