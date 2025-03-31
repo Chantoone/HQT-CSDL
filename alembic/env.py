@@ -12,16 +12,26 @@ from configs.conf import settings
 # Import all models that should be included in migrations
 # Add imports for all your model files here
 
-from user.models.user import User
-from auth_credential.models.auth_credential import AuthCredential
-from role.models.role import Role
-from user_role.models.user_role import UserRole
-from cinema.models.cinema import Cinema
-from room.models.room import Room
-from film.models.film import Film
-from food.models.food import Food
-from rate.models.rate import Rate
-from promotion.models.promotion import Promotion
+from role.routers import role
+from user.routers import user
+from user_role.routers import user_role
+from auth_credential.routers import auth_credential
+from authen.routers import authen
+from cinema.routers import cinema
+from film.routers import film
+from food.routers import food
+from rate.routers import rate
+from room.routers import room
+from showtime.routers import showtime
+from promotion.routers import promotion
+from seat.routers import seat
+from ticket.routers import ticket
+from bill.routers import bill
+from bill_prom.routers import bill_prom
+from user_bill.routers import user_bill
+from genre.routers import genre
+from film_genre.routers import film_genre
+
 
 
 # Import any other models that you have
