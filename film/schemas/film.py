@@ -9,12 +9,13 @@ class FilmBase(BaseModel):
     duration: Optional[int] = None
     release_date: Optional[str] = None
     author: Optional[str] = None
-    genre: Optional[str] = None
     poster_path: Optional[str] = None
+    status: Optional[str] = None
 
 
 class FilmCreate(FilmBase):
     title: str
+    status: str
 
 
 class FilmUpdate(FilmBase):

@@ -114,10 +114,8 @@ async def search_film(
             films = films.filter(Film.release_date == search.release_date)
         if search.author:
             films = films.filter(Film.author.like(f"%{search.author}%"))
-        if search.genre:
-            films = films.filter(Film.genre.like(f"%{search.genre}%"))
-        if search.is_active:
-            films = films.filter(Film.is_active == search.is_active)
+        if search.status:
+            films = films.filter(Film.status == search.status)
 
         return ListFilmResponse(
             films=films,
@@ -146,8 +144,8 @@ async def create_film(
             duration=film.duration,
             release_date=film.release_date,
             author=film.author,
-            genre=film.genre,
-            poster_path=film.poster_path
+            poster_path=film.poster_path, 
+            status=film.status,
         )
         
         db.add(film)
@@ -188,8 +186,8 @@ async def update_film(
             Film.duration: film.duration,
             Film.release_date: film.release_date,
             Film.author: film.author,
-            Film.genre: film.genre,
-            Film.poster_path: film.poster_path
+            Film.poster_path: film.poster_path, 
+            Film.status: film.status,
         })
 
         db.commit()
