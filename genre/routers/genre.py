@@ -4,30 +4,30 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 from configs.authentication import get_current_user
 from configs.database import get_db
-from film.models.film import Film
-from film.schemas.film import *
+from genre.models.genre import Genre
+from genre.schemas.genre import *
 import math
 
 
 router = APIRouter(
-    prefix="/film",
-    tags=["Film"],
+    prefix="/genre",
+    tags=["Genre"],
 )
 
 
 @router.get("/all",
-            response_model=ListFilmResponse,
+            response_model=ListGenreResponse,
             status_code=status.HTTP_200_OK)
-async def get_films(
+async def get_genres(
         db: Session = Depends(get_db),
     ):
 
     try:
-        films = db.query(Film).all()
+        genres = db.query(Genre).all()
 
-        return ListFilmResponse(
-            films=films,
-            total_data=len(films)
+        return ListGenreResponse(
+            genres=genres,
+            total_data=len(genres)
         )
     
     except SQLAlchemyError as e:
@@ -35,30 +35,30 @@ async def get_films(
             status_code=status.HTTP_409_CONFLICT,
             detail=f"Lỗi cơ sở dữ liệu: {str(e)}"
         )
-    
+
 
 @router.get("/pageable",
-            response_model=FilmPageableResponse,
+            response_model=GenrePageableResponse,
             status_code=status.HTTP_200_OK)
-async def get_films_pageable(
+async def get_genres_pageable(
         page: int,
         page_size: int,
         db: Session = Depends(get_db),
     ):
-     
+
     try:
-        total_count = db.query(Film).count()
+        total_count = db.query(Genre).count()
         total_pages = math.ceil(total_count / page_size)
         offset = (page - 1) * page_size
-        films = db.query(Film).offset(offset).limit(page_size).all()
+        genres = db.query(Genre).offset(offset).limit(page_size).all()
 
-        films_pageable_res = FilmPageableResponse(
-            films=films,
+        genres_pageable_res = GenrePageableResponse(
+            genres=genres,
             total_pages=total_pages,
             total_data=total_count
         )
 
-        return films_pageable_res
+        return genres_pageable_res
     
     except SQLAlchemyError as e:
         raise HTTPException(
@@ -67,24 +67,24 @@ async def get_films_pageable(
         )
     
 
-@router.get("/{film_id}",
-            response_model=FilmResponse,
+@router.get("/{genre_id}",
+            response_model=GenreResponse,
             status_code=status.HTTP_200_OK)
-async def get_film(
-        film_id: int,
+async def get_genre(
+        genre_id: int,
         db: Session = Depends(get_db),
     ):
-    
-    try:
-        film = db.query(Film).filter(Film.id == film_id).first()
 
-        if film is None:
+    try:
+        genre = db.query(Genre).filter(Genre.id == genre_id).first()
+
+        if genre is None:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail="Không tìm thấy phim"
+                detail="Thể loại không tồn tại"
             )
 
-        return film
+        return genre
     
     except SQLAlchemyError as e:
         raise HTTPException(
@@ -95,31 +95,26 @@ async def get_film(
 
 
 @router.post("/search",
-            response_model=ListFilmResponse,
+            response_model=ListGenreResponse,
             status_code=status.HTTP_200_OK)
-async def search_film(
-        search: FilmSearch,
+async def search_genres(
+        genre: GenreSearch,
         db: Session = Depends(get_db),
     ):
-    
-    try:
-        films = db.query(Film)
-        if search.title:
-            films = films.filter(Film.title.like(f"%{search.title}%"))
-        if search.description:
-            films = films.filter(Film.description.like(f"%{search.description}%"))
-        if search.duration:
-            films = films.filter(Film.duration == search.duration)
-        if search.release_date:
-            films = films.filter(Film.release_date == search.release_date)
-        if search.author:
-            films = films.filter(Film.author.like(f"%{search.author}%"))
-        if search.status:
-            films = films.filter(Film.status == search.status)
 
-        return ListFilmResponse(
-            films=films,
-            total_data=len(films)
+    try:
+        query = db.query(Genre)
+
+        if genre.name:
+            query = query.filter(Genre.name.ilike(f"%{genre.name}%"))
+        if genre.description:
+            query = query.filter(Genre.description.ilike(f"%{genre.description}%"))
+
+        genres = query.all()
+
+        return ListGenreResponse(
+            genres=genres,
+            total_data=len(genres)
         )
     
     except SQLAlchemyError as e:
@@ -130,29 +125,24 @@ async def search_film(
     
 
 @router.post("/create",
-             response_model=FilmResponse,
+             response_model=GenreResponse,
              status_code=status.HTTP_201_CREATED)
-async def create_film(
-        film: FilmCreate,
+async def create_genre(
+        genre: GenreCreate,
         db: Session = Depends(get_db),
     ):
-    
-    try:
-        film = Film(
-            title=film.title,
-            description=film.description,
-            duration=film.duration,
-            release_date=film.release_date,
-            author=film.author,
-            poster_path=film.poster_path, 
-            status=film.status,
-        )
-        
-        db.add(film)
-        db.commit()
-        db.refresh(film)
 
-        return film
+    try:
+        new_genre = Genre(
+            name=genre.name,
+            description=genre.description
+        )
+
+        db.add(new_genre)
+        db.commit()
+        db.refresh(new_genre)
+
+        return new_genre
     
     except SQLAlchemyError as e:
         db.rollback()
@@ -162,38 +152,31 @@ async def create_film(
         )
     
 
-@router.put("/update/{film_id}",
-            response_model=FilmResponse,
+@router.put("/update/{genre_id}",
+            response_model=GenreResponse,
             status_code=status.HTTP_200_OK)
-async def update_film(
-        film_id: int,
-        film: FilmUpdate,
+async def update_genre(
+        genre_id: int,
+        genre: GenreUpdate,
         db: Session = Depends(get_db),
     ):
-    
-    try:
-        film = db.query(Film).filter(Film.id == film_id)
 
-        if film.first() is None:
+    try:
+        existing_genre = db.query(Genre).filter(Genre.id == genre_id).first()
+
+        if existing_genre is None:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail="Phim không tồn tại"
+                detail="Thể loại không tồn tại"
             )
 
-        film.update({
-            Film.title: film.title,
-            Film.description: film.description,
-            Film.duration: film.duration,
-            Film.release_date: film.release_date,
-            Film.author: film.author,
-            Film.poster_path: film.poster_path, 
-            Film.status: film.status,
-        })
+        existing_genre.name = genre.name
+        existing_genre.description = genre.description
 
         db.commit()
-        db.refresh(film)
+        db.refresh(existing_genre)
 
-        return film
+        return existing_genre
     
     except SQLAlchemyError as e:
         db.rollback()
@@ -203,28 +186,28 @@ async def update_film(
         )
     
 
-@router.delete("/delete/{film_id}",
+@router.delete("/delete/{genre_id}",
                status_code=status.HTTP_200_OK)
-async def delete_film(
-        film_id: int,
+async def delete_genre(
+        genre_id: int,
         db: Session = Depends(get_db),
     ):
-    
-    try:
-        film = db.query(Film).filter(Film.id == film_id).first()
 
-        if film is None:
+    try:
+        genre = db.query(Genre).filter(Genre.id == genre_id).first()
+
+        if genre is None:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail="Phim không tồn tại"
+                detail="Thể loại không tồn tại"
             )
 
-        db.delete(film)
+        db.delete(genre)
         db.commit()
 
         return JSONResponse(
             status_code=status.HTTP_200_OK,
-            content={"message": "Xóa phim thành công"}
+            content={"message": "Xóa thể loại thành công"}
         )
     
     except SQLAlchemyError as e:
@@ -237,27 +220,28 @@ async def delete_film(
 
 @router.delete("/delete-many",
                status_code=status.HTTP_200_OK)
-async def delete_films(
-        film_ids: List[int],
+async def delete_genres(
+        genre_ids: List[int],
         db: Session = Depends(get_db),
     ):
-    
-    try:
-        films = db.query(Film).filter(Film.id.in_(film_ids)).all()
 
-        if len(films) == 0:
+    try:
+        genres = db.query(Genre).filter(Genre.id.in_(genre_ids)).all()
+
+        if len(genres) == 0:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail="Không tìm thấy phim"
+                detail="Không có thể loại nào được tìm thấy"
             )
 
-        for film in films:
-            db.delete(film)
+        for genre in genres:
+            db.delete(genre)
+
         db.commit()
 
         return JSONResponse(
             status_code=status.HTTP_200_OK,
-            content={"message": "Xóa phim thành công"}
+            content={"message": "Xóa các thể loại thành công"}
         )
     
     except SQLAlchemyError as e:
@@ -270,17 +254,17 @@ async def delete_films(
 
 @router.delete("/delete-all",
                status_code=status.HTTP_200_OK)
-async def delete_all_films(
+async def delete_all_genres(
         db: Session = Depends(get_db),
     ):
-    
+
     try:
-        db.query(Film).delete()
+        db.query(Genre).delete()
         db.commit()
 
         return JSONResponse(
             status_code=status.HTTP_200_OK,
-            content={"message": "Xóa tất cả phim thành công"}
+            content={"message": "Xóa tất cả thể loại thành công"}
         )
     
     except SQLAlchemyError as e:
@@ -289,3 +273,4 @@ async def delete_all_films(
             status_code=status.HTTP_409_CONFLICT,
             detail=f"Lỗi cơ sở dữ liệu: {str(e)}"
         )
+    

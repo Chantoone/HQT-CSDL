@@ -18,6 +18,8 @@ from ticket.routers import ticket
 from bill.routers import bill
 from bill_prom.routers import bill_prom
 from user_bill.routers import user_bill
+from genre.routers import genre
+from film_genre.routers import film_genre
 import uvicorn
 
 
@@ -56,6 +58,8 @@ app.router.include_router(ticket.router)
 app.router.include_router(bill.router)
 app.router.include_router(bill_prom.router)
 app.router.include_router(user_bill.router)
+app.router.include_router(genre.router)
+app.router.include_router(film_genre.router)
 
 
 # if __name__ == "__main__":
