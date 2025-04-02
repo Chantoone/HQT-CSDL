@@ -105,17 +105,21 @@ async def search_film(
     try:
         films = db.query(Film)
         if search.title:
-            films = films.filter(Film.title.like(f"%{search.title}%"))
+            films = films.filter(Film.title.ilike(f"%{search.title}%"))
         if search.description:
-            films = films.filter(Film.description.like(f"%{search.description}%"))
+            films = films.filter(Film.description.ilike(f"%{search.description}%"))
         if search.duration:
             films = films.filter(Film.duration == search.duration)
         if search.release_date:
             films = films.filter(Film.release_date == search.release_date)
         if search.author:
-            films = films.filter(Film.author.like(f"%{search.author}%"))
+            films = films.filter(Film.author.ilike(f"%{search.author}%"))
         if search.status:
             films = films.filter(Film.status == search.status)
+        if search.actors:
+            films = films.filter(Film.actors.ilike(f"%{search.actors}%"))
+        if search.director:
+            films = films.filter(Film.director.ilike(f"%{search.director}%"))
 
         return ListFilmResponse(
             films=films,
@@ -188,6 +192,8 @@ async def update_film(
             Film.author: film.author,
             Film.poster_path: film.poster_path, 
             Film.status: film.status,
+            Film.actors: film.actors,
+            Film.director: film.director,
         })
 
         db.commit()
