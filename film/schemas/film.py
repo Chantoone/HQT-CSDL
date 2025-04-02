@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date, datetime
 from pydantic import BaseModel
 from typing import List, Optional
 
@@ -7,7 +7,7 @@ class FilmBase(BaseModel):
     title: Optional[str] = None
     description: Optional[str] = None
     duration: Optional[int] = None
-    release_date: Optional[str] = None
+    release_date: Optional[date] = None
     author: Optional[str] = None
     poster_path: Optional[str] = None
     status: Optional[str] = None
