@@ -11,6 +11,8 @@ class FilmBase(BaseModel):
     author: Optional[str] = None
     poster_path: Optional[str] = None
     status: Optional[str] = None
+    actors: Optional[str] = None
+    director: Optional[str] = None
 
 
 class FilmCreate(FilmBase):

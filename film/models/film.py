@@ -15,6 +15,8 @@ class Film(Base):
     author = Column(String, nullable=True)
     poster_path = Column(String, nullable=True)
     status = Column(String, nullable=True)
+    actors = Column(String, nullable=True)
+    director = Column(String, nullable=True)
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
 
     rates = relationship("Rate", back_populates="film", passive_deletes=True)
