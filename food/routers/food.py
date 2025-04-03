@@ -149,7 +149,7 @@ async def create_food(
         )
     
 
-@router.put("/{food_id}",
+@router.put("/update/{food_id}",
             response_model=FoodResponse)
 async def update_food(
         food_id: int,
@@ -165,7 +165,7 @@ async def update_food(
                 detail="Thức ăn không tồn tại"
             )
 
-        food.update(food_update.dict())
+        food.update(food_update.dict(exclude_unset=True))
         db.commit()
 
         return JSONResponse(
@@ -181,7 +181,7 @@ async def update_food(
         )
     
 
-@router.delete("/{food_id}")
+@router.delete("/delete/{food_id}")
 async def delete_food(
         food_id: int,
         db: Session = Depends(get_db),
