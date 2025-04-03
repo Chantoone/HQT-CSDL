@@ -54,7 +54,7 @@ async def get_foods_pageable(
 
         foods_pageable_res = FoodPageableResponse(
             foods=foods,
-            total_pages=total_pages,
+            total_page=total_pages,
             total_data=total_count
         )
 
