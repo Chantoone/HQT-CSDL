@@ -24,6 +24,7 @@ class UserCreate(UserBase):
 class UserUpdate(UserBase):
     full_name: Optional[str] = None
     cinema_id: Optional[int] = None
+    is_active: Optional[bool] = None
 
 
 class UserResponse(UserBase):
