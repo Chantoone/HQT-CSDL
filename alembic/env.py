@@ -31,6 +31,7 @@ from bill_prom.routers import bill_prom
 from user_bill.routers import user_bill
 from genre.routers import genre
 from film_genre.routers import film_genre
+from showtime_seat.routers import showtime_seat
 
 
 
