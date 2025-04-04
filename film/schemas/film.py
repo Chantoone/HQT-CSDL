@@ -14,6 +14,9 @@ class FilmBase(BaseModel):
     actors: Optional[str] = None
     director: Optional[str] = None
 
+    @property
+    def genres(self):
+        return [fg.genre for fg in self.film_genres]
 
 class FilmCreate(FilmBase):
     title: str
@@ -50,3 +53,28 @@ class FilmPageableResponse(ListFilmResponse):
 
 class FilmSearch(FilmBase):
     pass
+
+class GenreBase(BaseModel):
+    id: int
+    name: str
+
+    class Config:
+        orm_mode = True
+
+class FILMRESPONSE(BaseModel):
+    id: int
+    title: str
+    description: Optional[str]
+    duration: Optional[int]
+    release_date: Optional[date]
+    author: Optional[str]
+    poster_path: Optional[str]
+    status: Optional[str]
+    actors: Optional[str]
+    director: Optional[str]
+    created_at: datetime
+    is_active: Optional[bool] = True
+    genres: Optional[List[GenreBase]] = []
+
+    class Config:
+        orm_mode = True
