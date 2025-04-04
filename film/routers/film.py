@@ -2,18 +2,84 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session,joinedload
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.sql.expression import func
 from configs.authentication import get_current_user
 from configs.database import get_db
 from film.models.film import Film
 from film.schemas.film import *
 from film_genre.models.film_genre import FilmGenre
 import math
-
 import random
+
+
 router = APIRouter(
     prefix="/film",
     tags=["Film"],
 )
+    
+
+# @router.get("/allID",status_code=status.HTTP_200_OK)
+# def get_allID(db: Session = Depends(get_db)):
+#     try:
+#         films = db.query(Film.id).all()
+#         film_ids = [film.id for film in films]
+#         return {"film_ids": film_ids, "total": len(film_ids)}
+#
+#
+#     except SQLAlchemyError as e:
+#         raise HTTPException(
+#             status_code=status.HTTP_409_CONFLICT,
+#             detail=f"Lỗi cơ sở dữ liệu: {str(e)}"
+#         )
+
+
+@router.get("/all",
+            response_model=ListFilmResponse,
+            status_code=status.HTTP_200_OK)
+async def get_films(
+        db: Session = Depends(get_db),
+    ):
+
+    try:
+        films = db.query(Film).all()
+
+        return ListFilmResponse(
+            films=films,
+            total_data=len(films)
+        )
+    
+    except SQLAlchemyError as e:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"Lỗi cơ sở dữ liệu: {str(e)}"
+        )
+    
+
+@router.get("/latest-now-showing", 
+            response_model=ListFilmResponse, 
+            status_code=status.HTTP_200_OK)
+def get_latest_now_showing_films(db: Session = Depends(get_db)):
+    try:
+        films = (
+            db.query(Film)
+            .filter(Film.status == "NOW_SHOWING")
+            .order_by(Film.created_at.desc())
+            .limit(7)
+            .all()
+        )
+
+        return ListFilmResponse(
+            films=films,
+            total_data=len(films)
+        )
+    
+    except SQLAlchemyError as e:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"Lỗi cơ sở dữ liệu: {str(e)}"
+        )
+    
+
 @router.get("/get_by_status_and_genre", response_model=ListFilmResponse, status_code=status.HTTP_200_OK)
 def get_movies(state: Optional[str] = None, type_id: Optional[int] = None, db: Session = Depends(get_db)):
     try:
@@ -39,62 +105,11 @@ def get_movies(state: Optional[str] = None, type_id: Optional[int] = None, db: S
             status_code=status.HTTP_409_CONFLICT,
             detail=f"Lỗi cơ sở dữ liệu: {str(e)}"
         )
-# @router.get("/allID",status_code=status.HTTP_200_OK)
-# def get_allID(db: Session = Depends(get_db)):
-#     try:
-#         films = db.query(Film.id).all()
-#         film_ids = [film.id for film in films]
-#         return {"film_ids": film_ids, "total": len(film_ids)}
-#
-#
-#     except SQLAlchemyError as e:
-#         raise HTTPException(
-#             status_code=status.HTTP_409_CONFLICT,
-#             detail=f"Lỗi cơ sở dữ liệu: {str(e)}"
-#         )
-@router.get("/all",
-            response_model=ListFilmResponse,
+
+
+@router.get("/random-now-showing", 
+            response_model=ListFilmResponse, 
             status_code=status.HTTP_200_OK)
-async def get_films(
-        db: Session = Depends(get_db),
-    ):
-
-    try:
-        films = db.query(Film).all()
-
-        return ListFilmResponse(
-            films=films,
-            total_data=len(films)
-        )
-    
-    except SQLAlchemyError as e:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=f"Lỗi cơ sở dữ liệu: {str(e)}"
-        )
-@router.get("/latest-now-showing", response_model=ListFilmResponse, status_code=status.HTTP_200_OK)
-def get_latest_now_showing_films(db: Session = Depends(get_db)):
-    try:
-        films = (
-            db.query(Film)
-            .filter(Film.status == "NOW_SHOWING")
-            .order_by(Film.created_at.desc())
-            .limit(7)
-            .all()
-        )
-
-        return ListFilmResponse(
-            films=films,
-            total_data=len(films)
-        )
-    except SQLAlchemyError as e:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Lỗi cơ sở dữ liệu: {str(e)}"
-        )
-from sqlalchemy.sql.expression import func
-
-@router.get("/random-now-showing", response_model=ListFilmResponse, status_code=status.HTTP_200_OK)
 def get_random_now_showing_films(db: Session = Depends(get_db)):
     try:
         films = (
@@ -109,59 +124,13 @@ def get_random_now_showing_films(db: Session = Depends(get_db)):
             films=films,
             total_data=len(films)
         )
+    
     except SQLAlchemyError as e:
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            status_code=status.HTTP_409_CONFLICT,
             detail=f"Lỗi cơ sở dữ liệu: {str(e)}"
         )
 
-@router.put("/update-film-status", status_code=status.HTTP_200_OK)
-async def update_film_status(db: Session = Depends(get_db)):
-    try:
-        films = db.query(Film).all()
-        total_films = len(films)
-
-        if total_films < 143:
-            raise HTTPException(
-                status_code=400,
-                detail=f"Hiện chỉ có {total_films} film. Cần đủ 143 film để cập nhật theo yêu cầu."
-            )
-
-        # Shuffle film list để đảm bảo chọn ngẫu nhiên
-        random.shuffle(films)
-
-        # Chia ra danh sách film cần update
-        end_films = films[:80]
-        now_showing_films = films[80:120]
-        coming_soon_films = films[120:143]
-
-        # Cập nhật trạng thái
-        for film in end_films:
-            film.status = "END"
-
-        for film in now_showing_films:
-            film.status = "NOW_SHOWING"
-
-        for film in coming_soon_films:
-            film.status = "COMING_SOON"
-
-        db.commit()
-
-        return {
-            "message": "Cập nhật trạng thái thành công cho 143 film!",
-            "updated": {
-                "END": len(end_films),
-                "NOW_SHOWING": len(now_showing_films),
-                "COMING_SOON": len(coming_soon_films)
-            }
-        }
-
-    except SQLAlchemyError as e:
-        db.rollback()
-        raise HTTPException(
-            status_code=500,
-            detail=f"Lỗi cơ sở dữ liệu: {str(e)}"
-        )
 
 @router.get("/pageable",
             response_model=FilmPageableResponse,
@@ -288,6 +257,55 @@ async def create_film(
             status_code=status.HTTP_409_CONFLICT,
             detail=f"Lỗi cơ sở dữ liệu: {str(e)}"
         )
+        
+
+@router.put("/update-film-status", status_code=status.HTTP_200_OK)
+async def update_film_status(db: Session = Depends(get_db)):
+    try:
+        films = db.query(Film).all()
+        total_films = len(films)
+
+        if total_films < 143:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Hiện chỉ có {total_films} film. Cần đủ 143 film để cập nhật theo yêu cầu."
+            )
+
+        # Shuffle film list để đảm bảo chọn ngẫu nhiên
+        random.shuffle(films)
+
+        # Chia ra danh sách film cần update
+        end_films = films[:80]
+        now_showing_films = films[80:120]
+        coming_soon_films = films[120:143]
+
+        # Cập nhật trạng thái
+        for film in end_films:
+            film.status = "END"
+
+        for film in now_showing_films:
+            film.status = "NOW_SHOWING"
+
+        for film in coming_soon_films:
+            film.status = "COMING_SOON"
+
+        db.commit()
+
+        return {
+            "message": "Cập nhật trạng thái thành công cho 143 film!",
+            "updated": {
+                "END": len(end_films),
+                "NOW_SHOWING": len(now_showing_films),
+                "COMING_SOON": len(coming_soon_films)
+            }
+        }
+
+    except SQLAlchemyError as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=409,
+            detail=f"Lỗi cơ sở dữ liệu: {str(e)}"
+        )
     
 
 @router.put("/update/{film_id}",
@@ -411,3 +429,4 @@ async def delete_all_films(
             status_code=status.HTTP_409_CONFLICT,
             detail=f"Lỗi cơ sở dữ liệu: {str(e)}"
         )
+    
