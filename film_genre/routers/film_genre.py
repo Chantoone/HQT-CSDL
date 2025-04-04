@@ -40,7 +40,7 @@ async def get_film_genres(
     
 
 @router.get("/pageable",
-            response_model=FilmGenreResponse,
+            response_model=FilmGenrePageableResponse,
             status_code=status.HTTP_200_OK)
 async def get_film_genres_pageable(
         page: int,
@@ -61,6 +61,41 @@ async def get_film_genres_pageable(
         )
 
         return film_genres_pageable_res
+    
+    except SQLAlchemyError as e:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"Lỗi cơ sở dữ liệu: {str(e)}"
+        )
+    
+
+@router.get("/films/by-genre/{genre_id}",
+            response_model=ListFilmResponse,
+            status_code=status.HTTP_200_OK)
+async def get_films_by_genre(
+        genre_id: int,
+        db: Session = Depends(get_db),
+    ):
+    """
+    Get all films that belong to a specific genre
+    """
+    try:
+        # Query films through the film_genre relationship
+        film_genres = db.query(FilmGenre).filter(FilmGenre.genre_id == genre_id).all()
+        
+        if not film_genres:
+            return []
+        
+        # Get film_ids from the film_genres
+        film_ids = [fg.film_id for fg in film_genres]
+        
+        # Query films with those ids
+        films = db.query(Film).filter(Film.id.in_(film_ids)).all()
+        
+        return ListFilmResponse(
+            films=films,
+            total_data=len(films)
+        )
     
     except SQLAlchemyError as e:
         raise HTTPException(
@@ -123,6 +158,7 @@ async def search_film_genre(
             detail=f"Lỗi cơ sở dữ liệu: {str(e)}"
         )
     
+
 @router.post("/film_genre/bulk-create", status_code=status.HTTP_201_CREATED)
 async def bulk_create_film_genres(db: Session = Depends(get_db)):
     try:
@@ -155,9 +191,10 @@ async def bulk_create_film_genres(db: Session = Depends(get_db)):
     except SQLAlchemyError as e:
         db.rollback()
         raise HTTPException(
-            status_code=500,
+            status_code=409,
             detail=f"Lỗi cơ sở dữ liệu: {str(e)}"
         )
+
 
 @router.post("/create",
              response_model=FilmGenreResponse,
@@ -300,41 +337,6 @@ async def delete_all_film_genres(
     
     except SQLAlchemyError as e:
         db.rollback()
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=f"Lỗi cơ sở dữ liệu: {str(e)}"
-        )
-
-
-@router.get("/films/by-genre/{genre_id}",
-            response_model=ListFilmResponse,
-            status_code=status.HTTP_200_OK)
-async def get_films_by_genre(
-        genre_id: int,
-        db: Session = Depends(get_db),
-    ):
-    """
-    Get all films that belong to a specific genre
-    """
-    try:
-        # Query films through the film_genre relationship
-        film_genres = db.query(FilmGenre).filter(FilmGenre.genre_id == genre_id).all()
-        
-        if not film_genres:
-            return []
-        
-        # Get film_ids from the film_genres
-        film_ids = [fg.film_id for fg in film_genres]
-        
-        # Query films with those ids
-        films = db.query(Film).filter(Film.id.in_(film_ids)).all()
-        
-        return ListFilmResponse(
-            films=films,
-            total_data=len(films)
-        )
-    
-    except SQLAlchemyError as e:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail=f"Lỗi cơ sở dữ liệu: {str(e)}"
