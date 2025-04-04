@@ -6,7 +6,6 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 from configs.database import get_db
 from configs.authentication import get_current_user
-from room.models.room import Room
 from seat.models.seat import Seat
 from seat.schemas.seat import *
 
@@ -103,12 +102,8 @@ def search_seats(
             seats = seats.filter(Seat.seat_number.ilike(f"%{seat.seat_number}%"))
         if seat.detail:
             seats = seats.filter(Seat.detail.ilike(f"%{seat.detail}%"))
-        if seat.is_booked:
-            seats = seats.filter(Seat.is_booked == seat.is_booked)
         if seat.is_active:
             seats = seats.filter(Seat.is_active == seat.is_active)
-        if seat.room_id:
-            seats = seats.filter(Seat.room_id == seat.room_id)
 
         seats = seats.all()
 
@@ -131,13 +126,13 @@ def create_seat(
         db: Session = Depends(get_db)
     ):
     try:
-        room = db.query(Room).filter(Room.id == seat.room_id).first()
-        if not room:
+        seat = db.query(Seat).filter(Seat.seat_number == seat.seat_number).first()
+        if seat:
             raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Room not found"
+                status_code=status.HTTP_409_CONFLICT,
+                detail="Seat already exists"
             )
-
+        
         new_seat = Seat(**seat.dict())
         db.add(new_seat)
         db.commit()
@@ -245,3 +240,4 @@ def delete_seats(
             status_code=status.HTTP_409_CONFLICT, 
             detail=str(e)
         )
+    
