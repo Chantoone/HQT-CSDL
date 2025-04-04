@@ -37,7 +37,9 @@ class ListRateResponse(BaseModel):
         from_attributes = True
 
 
-class RatePageableResponse(ListRateResponse):
+class RatePageableResponse(BaseModel):
+    rates: List[RateResponse]
+    total_data: int
     total_page: int
 
     class Config:

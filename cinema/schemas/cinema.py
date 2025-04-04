@@ -19,7 +19,7 @@ class CinemaCreate(CinemaBase):
 
 
 class CinemaUpdate(CinemaBase):
-    pass
+    is_active: Optional[bool] = None
 
 
 class CinemaResponse(CinemaBase):

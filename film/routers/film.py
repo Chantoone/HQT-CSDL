@@ -300,30 +300,22 @@ async def update_film(
     ):
     
     try:
-        film = db.query(Film).filter(Film.id == film_id)
+        db_film = db.query(Film).filter(Film.id == film_id).first()
 
-        if film.first() is None:
+        if db_film is None:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="Phim không tồn tại"
             )
 
-        film.update({
-            Film.title: film.title,
-            Film.description: film.description,
-            Film.duration: film.duration,
-            Film.release_date: film.release_date,
-            Film.author: film.author,
-            Film.poster_path: film.poster_path, 
-            Film.status: film.status,
-            Film.actors: film.actors,
-            Film.director: film.director,
-        })
+        update_data = film.dict(exclude_unset=True)
+        for key, value in update_data.items():
+            setattr(db_film, key, value)
 
         db.commit()
-        db.refresh(film)
+        db.refresh(db_film)
 
-        return film
+        return db_film
     
     except SQLAlchemyError as e:
         db.rollback()

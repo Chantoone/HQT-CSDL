@@ -3,8 +3,8 @@ from pydantic import BaseModel
 from typing import List, Optional
 
 class FoodBase(BaseModel):
-    name: Optional[str]
-    price: Optional[int]
+    name: Optional[str] = None
+    price: Optional[int] = None
 
     class Config:
         from_attributes = True

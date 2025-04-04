@@ -179,10 +179,9 @@ async def update_cinema(
                 detail="Rạp chiếu phim không tồn tại"
             )
 
-        cinema.name = cinema_data.name
-        cinema.address = cinema_data.address
-        cinema.phone_number = cinema_data.phone_number
-
+        update_data = cinema_data.dict(exclude_unset=True)
+        for key, value in update_data.items():
+            setattr(cinema, key, value)
         db.commit()
         db.refresh(cinema)
 

@@ -473,7 +473,7 @@ async def update_user(
             )
 
         user.update(
-            newUser.dict(), 
+            newUser.dict(exclude_unset=True), 
             synchronize_session=False
         )
         db.commit()
