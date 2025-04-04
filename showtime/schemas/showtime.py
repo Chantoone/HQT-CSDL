@@ -1,6 +1,7 @@
 from datetime import datetime, date
 from pydantic import BaseModel
 from typing import List, Optional
+
 from film.schemas.film import FilmResponse
 from room.schemas.room import RoomResponse
 
@@ -8,8 +9,6 @@ from room.schemas.room import RoomResponse
 class ShowtimeBase(BaseModel):
     name: Optional[str] = None
     start_time: Optional[datetime] = None
-    film_id: Optional[int] = None
-    room_id: Optional[int] = None
 
     class Config:
         from_attributes = True
@@ -23,23 +22,14 @@ class ShowtimeCreate(ShowtimeBase):
 
 
 class ShowtimeUpdate(ShowtimeBase):
-    pass
+    film_id: Optional[int] = None
+    room_id: Optional[int] = None
 
 
 class ShowtimeResponse(ShowtimeBase):
     id: int
-    film: Optional[FilmResponse] = None
-    room: Optional[RoomResponse] = None
-    created_at: datetime
-
-    class Config:
-        from_attributes = True
-
-
-class ShowtimeResponseWithoutRoom(ShowtimeBase):
-    id: int
-    film: Optional[FilmResponse] = None
-    room: Optional[RoomResponse] = None
+    film: FilmResponse  
+    room: RoomResponse 
     created_at: datetime
 
     class Config:
@@ -47,23 +37,23 @@ class ShowtimeResponseWithoutRoom(ShowtimeBase):
 
 
 class ListShowtimeResponse(BaseModel):
-    showtimes: List[ShowtimeResponse]
     total_data: int
+    showtimes: List[ShowtimeResponse]
 
     class Config:
         from_attributes = True
 
 
 class ShowtimePageableResponse(BaseModel):
-    showtimes: List[ShowtimeResponse]
     total_data: int
     total_page: int
+    showtimes: List[ShowtimeResponse]
 
     class Config:
         from_attributes = True 
 
 
-class ShowtimeSearch(ShowtimeBase):
+class ShowtimeSearch(ShowtimeUpdate):
     pass
 
 
@@ -75,8 +65,6 @@ class AvailableDateResponse(BaseModel):
     class Config:
         from_attributes = True
 
-
-# Thêm class này
 
 class AvailableTimeResponse(BaseModel):
     id: int
@@ -100,6 +88,7 @@ class SeatInfo(BaseModel):
     
     class Config:
         from_attributes = True
+
 
 class SeatRow(BaseModel):
     row: str              # Ký hiệu hàng (A, B, C...)

@@ -15,6 +15,6 @@ class Showtime(Base):
 
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
 
-    film = relationship("Film", back_populates="showtime", passive_deletes=True)
-    room = relationship("Room", back_populates="showtime", passive_deletes=True)
-    ticket = relationship("Ticket", back_populates="showtime", passive_deletes=True)
+    film = relationship("Film", back_populates="showtimes", passive_deletes=True)
+    room = relationship("Room", back_populates="showtimes", passive_deletes=True)
+    showtime_seat = relationship("ShowtimeSeat", back_populates="showtime", passive_deletes=True)
