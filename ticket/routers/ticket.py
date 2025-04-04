@@ -4,11 +4,9 @@ from fastapi.responses import JSONResponse
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
-from cinema.models.cinema import Cinema
 from configs.database import get_db
 from configs.authentication import get_current_user
-from seat.models.seat import Seat
-from showtime.models.showtime import Showtime
+from showtime_seat.models.showtime_seat import ShowtimeSeat
 from ticket.models.ticket import Ticket
 from ticket.schemas.ticket import *
 import math
@@ -20,7 +18,7 @@ router = APIRouter(
 )
 
 
-@router.get("/", 
+@router.get("/all", 
             response_model=ListTicketResponse, 
             status_code=status.HTTP_200_OK)
 async def get_all_tickets(
@@ -39,6 +37,86 @@ async def get_all_tickets(
             status_code=status.HTTP_409_CONFLICT,
             detail=str(e)
         )
+    
+
+# @router.get("/rooms/by-film/{film_id}",
+#             response_model=ListTicketResponse,
+#             status_code=status.HTTP_200_OK)
+# async def get_tickets_by_film(
+#         film_id: int,
+#         db: Session = Depends(get_db)
+#     ):
+
+#     try:
+#         film = db.query(Film).filter(Film.id == film_id).first()
+#         if not film:
+#             raise HTTPException(
+#                 status_code=status.HTTP_404_NOT_FOUND,
+#                 detail="Film not found"
+#             )
+
+#         tickets = db.query(Ticket).filter(Ticket.film_id == film_id).all()
+
+#         if not tickets:
+#             raise HTTPException(
+#                 status_code=status.HTTP_404_NOT_FOUND,
+#                 detail="Tickets not found"
+#             )
+
+#         return ListTicketResponse(
+#             tickets=tickets,
+#             total_data=len(tickets)
+#         )
+    
+#     except SQLAlchemyError as e:
+#         raise HTTPException(
+#             status_code=status.HTTP_409_CONFLICT,
+#             detail=str(e)
+#         )
+    
+
+# @router.get("/days/by-room-and-film/{room_id}/{film_id}",
+#             response_model=ListTicketResponse,
+#             status_code=status.HTTP_200_OK)
+# async def get_tickets_by_room_and_film(
+#         room_id: int,
+#         film_id: int,
+#         db: Session = Depends(get_db)
+#     ):
+
+#     try:
+#         room = db.query(Room).filter(Room.id == room_id).first()
+#         if not room:
+#             raise HTTPException(
+#                 status_code=status.HTTP_404_NOT_FOUND,
+#                 detail="Room not found"
+#             )
+
+#         film = db.query(Film).filter(Film.id == film_id).first()
+#         if not film:
+#             raise HTTPException(
+#                 status_code=status.HTTP_404_NOT_FOUND,
+#                 detail="Film not found"
+#             )
+
+#         tickets = db.query(Ticket).filter(Ticket.room_id == room_id, Ticket.film_id == film_id).all()
+
+#         if not tickets:
+#             raise HTTPException(
+#                 status_code=status.HTTP_404_NOT_FOUND,
+#                 detail="Tickets not found"
+#             )
+
+#         return ListTicketResponse(
+#             tickets=tickets,
+#             total_data=len(tickets)
+#         )
+    
+#     except SQLAlchemyError as e:
+#         raise HTTPException(
+#             status_code=status.HTTP_409_CONFLICT,
+#             detail=str(e)
+#         )
     
 
 @router.get("/pageable",
@@ -106,18 +184,12 @@ async def search_tickets(
 
         if ticket.title:
             tickets = tickets.filter(Ticket.title.ilike(f"%{ticket.title}%"))
-        
         if ticket.description:
             tickets = tickets.filter(Ticket.description.ilike(f"%{ticket.description}%"))
-        
         if ticket.price:
             tickets = tickets.filter(Ticket.price == ticket.price)
-        
-        if ticket.showtime_id:
-            tickets = tickets.filter(Ticket.showtime_id == ticket.showtime_id)
-        
-        if ticket.seat_id:
-            tickets = tickets.filter(Ticket.seat_id == ticket.seat_id)
+        if ticket.showtime_seat_id:
+            tickets = tickets.filter(Ticket.showtime_seat_id == ticket.showtime_seat_id)
         
         tickets = tickets.all()
 
@@ -140,26 +212,18 @@ async def create_ticket(
         db: Session = Depends(get_db)
     ):
     try:
-        showtime = db.query(Showtime).filter(Showtime.id == ticket.showtime_id).first()
-        if not showtime:
+        showtime_seat = db.query(ShowtimeSeat).filter(ShowtimeSeat.id == ticket.showtime_seat_id).first()
+        if not showtime_seat:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail="Showtime not found"
-            )
-        
-        seat = db.query(Seat).filter(Seat.id == ticket.seat_id).first()
-        if not seat:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Seat not found"
+                detail="Showtime seat not found"
             )
 
         new_ticket = Ticket(
             title=ticket.title,
             description=ticket.description,
             price=ticket.price,
-            showtime_id=ticket.showtime_id,
-            seat_id=ticket.seat_id
+            showtime_seat_id=ticket.showtime_seat_id
         )
 
         db.add(new_ticket)
@@ -196,8 +260,7 @@ async def update_ticket(
         ticket_data.title = ticket.title
         ticket_data.description = ticket.description
         ticket_data.price = ticket.price
-        ticket_data.showtime_id = ticket.showtime_id
-        ticket_data.seat_id = ticket.seat_id
+        ticket_data.showtime_seat_id = ticket.showtime_seat_id
 
         db.commit()
 

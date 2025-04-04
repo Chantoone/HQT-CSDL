@@ -2,8 +2,9 @@ from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime
 
-from seat.schemas.seat import SeatResponseWithoutRoom
+from seat.schemas.seat import SeatResponse
 from showtime.schemas.showtime import ShowtimeResponse
+from showtime_seat.schemas.showtime_seat import ShowtimeSeatResponse
 
 
 class TicketBase(BaseModel):
@@ -18,19 +19,16 @@ class TicketBase(BaseModel):
 class TicketCreate(TicketBase):
     title: str
     price: int
-    showtime_id: int
-    seat_id: int
+    showtime_seat_id: int
 
 
 class TicketUpdate(TicketBase):
-    showtime_id: Optional[int] = None
-    seat_id: Optional[int] = None
+    showtime_seat_id: Optional[int] = None
 
 
 class TicketResponse(TicketBase):
     id: int
-    showtime: ShowtimeResponse
-    seat: SeatResponseWithoutRoom
+    showtime_seat: ShowtimeSeatResponse
     created_at: datetime
 
     class Config:
@@ -38,25 +36,21 @@ class TicketResponse(TicketBase):
 
 
 class ListTicketResponse(BaseModel):
-    tickets: list[TicketResponse]
     total_data: int
+    tickets: list[TicketResponse]
 
     class Config:
         from_attributes = True
 
 
 class TicketPageableResponse(BaseModel):
-    tickets: list[TicketResponse]
     total_data: int
     total_page: int
+    tickets: list[TicketResponse]
 
     class Config:
         from_attributes = True
 
 
-class TicketSearch(BaseModel):
-    title: Optional[str] = None
-    description: Optional[str] = None
-    price: Optional[int] = None
-    showtime_id: Optional[int] = None
-    seat_id: Optional[int] = None
+class TicketSearch(TicketUpdate):
+    pass
