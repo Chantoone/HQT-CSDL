@@ -18,7 +18,7 @@ router = APIRouter(
 )
 
 
-@router.get("/", 
+@router.get("/all", 
             response_model=ListRateResponse, 
             status_code=status.HTTP_200_OK)
 def get_all_rate(
@@ -55,7 +55,7 @@ def get_rate_pageable(
 
             rates_pageable_res = RatePageableResponse(
                 rates=rates,
-                total_pages=total_pages,
+                total_page=total_pages,
                 total_data=total_count
             )
 
