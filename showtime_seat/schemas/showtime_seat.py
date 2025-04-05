@@ -52,3 +52,12 @@ class ShowtimeSeatPageableResponse(BaseModel):
 
 class ShowtimeSeatSearch(ShowtimeSeatUpdate):
     pass
+
+
+class SeatWithStatus(BaseModel):
+    showtime_seat_id: int
+    seat_number: str
+    seat_status: bool
+
+    class Config:
+        from_attributes = True

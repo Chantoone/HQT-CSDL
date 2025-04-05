@@ -75,6 +75,35 @@ async def get_all_showtime_seats_pageable(
         )
     
 
+@router.get("/seats-by-showtime/{showtime_id}", response_model=List[SeatWithStatus])
+def get_seats_by_showtime(showtime_id: int, db: Session = Depends(get_db)):
+    try:
+        # Join ShowtimeSeat + Seat để lấy thông tin ghế và trạng thái
+        results = (
+            db.query(Seat, ShowtimeSeat)
+            .join(ShowtimeSeat, Seat.id == ShowtimeSeat.seat_id)
+            .filter(ShowtimeSeat.showtime_id == showtime_id)
+            .all()
+        )
+
+        seats_with_status = [
+            SeatWithStatus(
+                showtime_seat_id=showtimeseat.id,
+                seat_number=seat.seat_number,
+                seat_status=showtimeseat.seat_status,
+            )
+            for seat, showtimeseat in results
+        ]
+
+        return seats_with_status
+
+    except SQLAlchemyError as e:
+        raise HTTPException(
+            status_code=409, 
+            detail=str(e)
+        )
+
+
 @router.get("/{showtime_seat_id}",
             response_model=ShowtimeSeatResponse,
             status_code=status.HTTP_200_OK) 
