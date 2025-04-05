@@ -126,8 +126,8 @@ def create_seat(
         db: Session = Depends(get_db)
     ):
     try:
-        seat = db.query(Seat).filter(Seat.seat_number == seat.seat_number).first()
-        if seat:
+        db_seat = db.query(Seat).filter(Seat.seat_number == seat.seat_number).first()
+        if db_seat:
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
                 detail="Seat already exists"
