@@ -71,6 +71,42 @@ async def get_cinemas_pageable(
         )
     
 
+@router.get("/by-film/{film_id}",
+            response_model=ListCinemaResponse,
+            status_code=status.HTTP_200_OK)
+def get_cinemas_by_film(
+        film_id: int, 
+        db: Session = Depends(get_db)
+    ):
+
+    try:
+        cinemas = (
+            db.query(Cinema)
+            .join(Cinema.room)
+            .join(Room.showtimes)
+            .filter(Showtime.film_id == film_id)
+            .distinct()
+            .all()
+        )
+
+        if not cinemas:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="No cinemas found for the given film"
+            )
+
+        return ListCinemaResponse(
+            cinemas=cinemas,
+            total_data=len(cinemas)
+        )
+
+    except SQLAlchemyError as e:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"Lỗi cơ sở dữ liệu: {str(e)}"
+        )   
+
+
 @router.get("/{id}",
             response_model=CinemaResponse,
             status_code=status.HTTP_200_OK)
