@@ -11,13 +11,40 @@ from room.models.room import Room
 from room.schemas.room import *
 import math
 
+from seat.models.seat import Seat
 
 router = APIRouter(
     prefix='/rooms',
     tags=['Rooms']
 )
 
+@router.post("/")
+def create_room(room_data: RoomBase, db: Session = Depends(get_db)):
+    # Tạo phòng
+    new_room = Room(
+        name=room_data.name,
+        detail=room_data.detail,
+        capacity=room_data.capacity,
+        cinema_id=room_data.cinema_id,
+    )
+    db.add(new_room)
+    db.commit()
+    db.refresh(new_room)
+    lenrow=room_data.capacity//10
+    # Tạo ghế (A1-A10 đến F1-F10)
+    rows = ['A', 'B', 'C', 'D', 'E', 'F']
+    seats = []
+    for row in range(lenrow):
+        for num in range(1, 11):  # A1-A10
+            seat_number = f"{rows[row]}{num}"
+            seats.append(
+                Seat(seat_number=seat_number, room_id=new_room.id)
+            )
 
+    db.add_all(seats)
+    db.commit()
+
+    return {"message": "Phòng và các ghế đã được tạo thành công", "room_id": new_room.id}
 @router.get('/', 
             response_model=ListRoomResponse, 
             status_code=status.HTTP_200_OK)
