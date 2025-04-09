@@ -39,19 +39,19 @@ def get_movies(state: Optional[str] = None, type_id: Optional[int] = None, db: S
             status_code=status.HTTP_409_CONFLICT,
             detail=f"Lỗi cơ sở dữ liệu: {str(e)}"
         )
-# @router.get("/allID",status_code=status.HTTP_200_OK)
-# def get_allID(db: Session = Depends(get_db)):
-#     try:
-#         films = db.query(Film.id).all()
-#         film_ids = [film.id for film in films]
-#         return {"film_ids": film_ids, "total": len(film_ids)}
-#
-#
-#     except SQLAlchemyError as e:
-#         raise HTTPException(
-#             status_code=status.HTTP_409_CONFLICT,
-#             detail=f"Lỗi cơ sở dữ liệu: {str(e)}"
-#         )
+@router.get("/allID",status_code=status.HTTP_200_OK)
+def get_allID(db: Session = Depends(get_db)):
+    try:
+        films = db.query(Film.id).all()
+        film_ids = [film.id for film in films]
+        return {"film_ids": film_ids, "total": len(film_ids)}
+
+
+    except SQLAlchemyError as e:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"Lỗi cơ sở dữ liệu: {str(e)}"
+        )
 @router.get("/all",
             response_model=ListFilmResponse,
             status_code=status.HTTP_200_OK)

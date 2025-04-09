@@ -16,4 +16,3 @@ class Seat(Base):
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
 
     room = relationship("Room", back_populates="seat", passive_deletes=True)
-    ticket = relationship("Ticket", back_populates="seat", passive_deletes=True)

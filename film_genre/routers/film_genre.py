@@ -123,18 +123,53 @@ async def search_film_genre(
             detail=f"Lỗi cơ sở dữ liệu: {str(e)}"
         )
     
+# @router.post("/film_genre/bulk-create", status_code=status.HTTP_201_CREATED)
+# async def bulk_create_film_genres(db: Session = Depends(get_db)):
+#     try:
+#         # Danh sách 143 film_id
+#         film_ids = list(range(148, 291))
+#
+#         # Lấy tất cả genres
+#         genres = db.query(Genre).all()
+#         if not genres:
+#             raise HTTPException(status_code=404, detail="Không có thể loại nào trong cơ sở dữ liệu.")
+#
+#         # Gán ngẫu nhiên thể loại cho từng film
+#         created_records = []
+#         for film_id in film_ids:
+#             selected_genres = random.sample(genres, random.randint(1, 3))
+#             for genre in selected_genres:
+#                 film_genre = FilmGenre(film_id=film_id, genre_id=genre.id)
+#                 db.add(film_genre)
+#                 created_records.append({
+#                     "film_id": film_id,
+#                     "genre_id": genre.id
+#                 })
+#
+#         db.commit()
+#         return {
+#             "message": f"Đã tạo thành công {len(created_records)} bản ghi film-genre.",
+#             "data": created_records
+#         }
+#
+#     except SQLAlchemyError as e:
+#         db.rollback()
+#         raise HTTPException(
+#             status_code=500,
+#             detail=f"Lỗi cơ sở dữ liệu: {str(e)}"
+#         )
 @router.post("/film_genre/bulk-create", status_code=status.HTTP_201_CREATED)
 async def bulk_create_film_genres(db: Session = Depends(get_db)):
     try:
-        # Danh sách 143 film_id
-        film_ids = list(range(148, 291))
+        # Danh sách film_id từ 1 đến 143
+        film_ids = list(range(1, 144))
 
-        # Lấy tất cả genres
+        # Lấy tất cả genres trong DB
         genres = db.query(Genre).all()
         if not genres:
             raise HTTPException(status_code=404, detail="Không có thể loại nào trong cơ sở dữ liệu.")
 
-        # Gán ngẫu nhiên thể loại cho từng film
+        # Gán ngẫu nhiên 1-3 thể loại cho từng phim
         created_records = []
         for film_id in film_ids:
             selected_genres = random.sample(genres, random.randint(1, 3))
@@ -158,7 +193,6 @@ async def bulk_create_film_genres(db: Session = Depends(get_db)):
             status_code=500,
             detail=f"Lỗi cơ sở dữ liệu: {str(e)}"
         )
-
 @router.post("/create",
              response_model=FilmGenreResponse,
                 status_code=status.HTTP_201_CREATED)
