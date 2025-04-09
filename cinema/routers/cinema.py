@@ -25,20 +25,12 @@ router = APIRouter(
 async def get_cinemas(
         db: Session = Depends(get_db),
     ):
+    cinemas = db.query(Cinema).all()
 
-    try:
-        cinemas = db.query(Cinema).all()
-
-        return ListCinemaResponse(
-            cinemas=cinemas,
-            total_data=len(cinemas)
-        )
-    
-    except SQLAlchemyError as e:
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=f"Lỗi cơ sở dữ liệu: {str(e)}"
-        )
+    return ListCinemaResponse(
+        cinemas=cinemas,
+        total_data=len(cinemas)
+    )
     
 
 @router.get("/pageable",

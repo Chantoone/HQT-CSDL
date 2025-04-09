@@ -4,6 +4,7 @@ from sqlalchemy import func
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 from configs.database import get_db
+from configs.conf import settings
 from configs.authentication import get_current_user, hash_password, validate_pwd
 from role.models.role import Role
 from user.models.user import User
@@ -328,8 +329,7 @@ async def create_account(
                     detail="Email đã tồn tại"
                 )
 
-        # Get default password from .env
-        default_password = getenv("DEFAULT_PASSWORD")
+        default_password = settings.default_password
         if not default_password:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
