@@ -17,6 +17,7 @@ class FilmBase(BaseModel):
     @property
     def genres(self):
         return [fg.genre for fg in self.film_genres]
+    
 
 class FilmCreate(FilmBase):
     title: str
@@ -54,12 +55,14 @@ class FilmPageableResponse(ListFilmResponse):
 class FilmSearch(FilmBase):
     pass
 
+
 class GenreBase(BaseModel):
     id: int
     name: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
+
 
 class FILMRESPONSE(BaseModel):
     id: int
@@ -77,4 +80,5 @@ class FILMRESPONSE(BaseModel):
     genres: Optional[List[GenreBase]] = []
 
     class Config:
-        orm_mode = True
+        from_attributes = True
+        

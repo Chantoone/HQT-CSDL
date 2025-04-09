@@ -8,7 +8,6 @@ class RoomBase(BaseModel):
     name: Optional[str] = None
     detail: Optional[str] = None
     capacity: Optional[int] = None
-    cinema_id: int
 
     class Config:
         from_attributes = True
@@ -17,10 +16,11 @@ class RoomBase(BaseModel):
 class RoomCreate(RoomBase):
     name: str
     capacity: int
-    
+    cinema_id: int
+
 
 class RoomUpdate(RoomBase):
-    pass
+    cinema_id: int
 
 
 class RoomResponse(RoomBase):

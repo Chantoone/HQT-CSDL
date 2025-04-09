@@ -11,11 +11,9 @@ class Ticket(Base):
     title = Column(String, nullable=False)
     description = Column(String)
     price = Column(Integer, nullable=False)
-    showtime_id = Column(Integer, ForeignKey("showtimes.id", ondelete="CASCADE"), nullable=False)
-    seat_id = Column(Integer, ForeignKey("seats.id", ondelete="CASCADE"), nullable=False)
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
-
-    showtime = relationship("Showtime", back_populates="ticket", passive_deletes=True)
-    seat = relationship("Seat", back_populates="ticket", passive_deletes=True)
-
+    
+    showtime_seat_id = Column(Integer, ForeignKey("showtime_seats.id", ondelete="CASCADE"), nullable=False)
+    
+    showtime_seat = relationship("ShowtimeSeat", back_populates="ticket", passive_deletes=True)
     bill = relationship("Bill", back_populates="ticket", passive_deletes=True)

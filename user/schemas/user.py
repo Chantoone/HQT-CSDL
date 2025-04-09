@@ -10,7 +10,6 @@ class UserBase(BaseModel):
     phone_number: Optional[str] = None
     birthdate: Optional[date] = None
     address: Optional[str] = None
-    cinema: Optional[CinemaBase] = None
 
     class Config:
         from_attributes = True
@@ -32,6 +31,7 @@ class UserResponse(UserBase):
     full_name: str
     username: str
     is_active: bool
+    cinema: Optional[CinemaBase] = None
     created_at: datetime
 
     roles: list[str]

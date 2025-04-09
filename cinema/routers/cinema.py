@@ -63,6 +63,42 @@ async def get_cinemas_pageable(
         )
     
 
+@router.get("/by-film/{film_id}",
+            response_model=ListCinemaResponse,
+            status_code=status.HTTP_200_OK)
+def get_cinemas_by_film(
+        film_id: int, 
+        db: Session = Depends(get_db)
+    ):
+
+    try:
+        cinemas = (
+            db.query(Cinema)
+            .join(Cinema.room)
+            .join(Room.showtimes)
+            .filter(Showtime.film_id == film_id)
+            .distinct()
+            .all()
+        )
+
+        if not cinemas:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="No cinemas found for the given film"
+            )
+
+        return ListCinemaResponse(
+            cinemas=cinemas,
+            total_data=len(cinemas)
+        )
+
+    except SQLAlchemyError as e:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"Lỗi cơ sở dữ liệu: {str(e)}"
+        )   
+
+
 @router.get("/{id}",
             response_model=CinemaResponse,
             status_code=status.HTTP_200_OK)
@@ -273,28 +309,3 @@ async def delete_all_cinemas(
             detail=f"Lỗi cơ sở dữ liệu: {str(e)}"
         )
 
-
-@router.get("/by-film/{film_id}", 
-            response_model=List[CinemaResponse])
-def get_cinemas_by_film_id(
-    film_id: int, 
-    db: Session = Depends(get_db)
-):
-    film_exists = db.query(Showtime).filter(Showtime.film_id == film_id).first()
-    if not film_exists:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, 
-                            detail=f"No showtimes found for film with id: {film_id}")
-
-    cinemas = db.query(Cinema).join(
-        Room, Room.cinema_id == Cinema.id
-    ).join(
-        Showtime, Showtime.room_id == Room.id
-    ).filter(
-        Showtime.film_id == film_id
-    ).distinct().all()
-    
-    if not cinemas:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, 
-                            detail=f"No cinemas showing film with id: {film_id}")
-    
-    return cinemas
