@@ -7,7 +7,7 @@ from configs.database import Base
 class Role(Base):
     __tablename__ = "roles"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True,autoincrement=True)
     name = Column(String, nullable=False, unique = True)
     detail = Column(String, nullable=False)
 

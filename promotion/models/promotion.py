@@ -14,6 +14,6 @@ class Promotion(Base):
 
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
 
-    staff_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
+    staff_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'))
     staff = relationship("User", back_populates="promotion", passive_deletes=True)
     bill_prom = relationship("BillProm", back_populates="prom", passive_deletes=True)

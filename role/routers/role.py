@@ -134,29 +134,23 @@ async def create_role(
         db: Session = Depends(get_db), 
     ):
 
-    try:
-        role = db.query(Role).filter(Role.name == new_role.name).first()
-        if role:
-            raise HTTPException(
+    role = db.query(Role).filter(Role.name == new_role.name).first()
+    if role:
+        raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST, 
                 detail="Quyền đã tôn tại"
-            )
-
-        role = Role(**new_role.dict())
-        db.add(role)
-        db.commit()    
-
-        return JSONResponse(
-            status_code=status.HTTP_201_CREATED,
-            content={"message": "Tạo quyền thành công"}
         )
 
-    except SQLAlchemyError as e:
-        db.rollback()
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=f"Lỗi cơ sở dữ liệu: {str(e)}"
-        )
+    role = Role(**new_role.dict())
+    db.add(role)
+    db.commit()
+
+    return JSONResponse(
+        status_code=status.HTTP_201_CREATED,
+        content={"message": "Tạo quyền thành công"}
+    )
+
+
 
 
 @router.put("/update/{id}", 
