@@ -9,12 +9,12 @@ class Bill(Base):
 
     id = Column(Integer, primary_key=True, nullable=False, index=True)
     payment_method = Column(String, nullable=False)
-    payment_time = Column(TIMESTAMP(timezone=True), nullable=False)
-    status = Column(String, nullable=False)
-    value = Column(Integer, nullable=False)
-    staff_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    payment_time = Column(TIMESTAMP(timezone=True), nullable=False,server_default=text('now()'))
+    status = Column(String, nullable=False,server_default=text('PAID'))
+    value = Column(Integer)
+    staff_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
     food_id = Column(Integer, ForeignKey("foods.id", ondelete="CASCADE"), nullable=False)
-    ticket_id = Column(Integer, ForeignKey("tickets.id", ondelete="CASCADE"), nullable=False)
+
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
 
     staff = relationship("User", back_populates="bill", passive_deletes=True)

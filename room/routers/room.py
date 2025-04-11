@@ -19,7 +19,7 @@ router = APIRouter(
 )
 
 @router.post("/")
-def create_room(room_data: RoomBase, db: Session = Depends(get_db)):
+def create_room(room_data: RoomCreate, db: Session = Depends(get_db)):
     # Tạo phòng
     new_room = Room(
         name=room_data.name,
