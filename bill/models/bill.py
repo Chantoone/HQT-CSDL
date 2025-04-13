@@ -13,7 +13,7 @@ class Bill(Base):
     status = Column(String, nullable=False,server_default=text('PAID'))
     value = Column(Integer)
     staff_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
-    food_id = Column(Integer, ForeignKey("foods.id", ondelete="CASCADE"), nullable=False)
+    food_id = Column(Integer, ForeignKey("foods.id", ondelete="CASCADE"))
 
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
 
