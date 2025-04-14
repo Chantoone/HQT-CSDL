@@ -17,6 +17,8 @@ class TicketBase(BaseModel):
 
 
 class TicketCreate(TicketBase):
+    bill_id: int
+    description: str
     title: str
     price: int
     showtime_seat_id: int

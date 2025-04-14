@@ -77,8 +77,11 @@ async def get_all_showtime_seats_pageable(
 
 @router.get("/seats-by-showtime/{showtime_id}", response_model=List[SeatWithStatus])
 def get_seats_by_showtime(showtime_id: int, db: Session = Depends(get_db)):
+    """
+    Get all seats with their status and id_seat for a specific showtime.
+    """
     try:
-        # Join ShowtimeSeat + Seat để lấy thông tin ghế và trạng thái
+        # Join ShowtimeSeat + Seat to get seat details and status
         results = (
             db.query(Seat, ShowtimeSeat)
             .join(ShowtimeSeat, Seat.id == ShowtimeSeat.seat_id)
@@ -89,6 +92,7 @@ def get_seats_by_showtime(showtime_id: int, db: Session = Depends(get_db)):
         seats_with_status = [
             SeatWithStatus(
                 showtime_seat_id=showtimeseat.id,
+                id_seat=seat.id,  # Include id_seat in the response
                 seat_number=seat.seat_number,
                 seat_status=showtimeseat.seat_status,
             )

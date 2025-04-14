@@ -147,6 +147,40 @@ async def get_all_tickets_pageable(
         )
     
 
+@router.post("/create",
+             status_code=status.HTTP_201_CREATED)
+async def create_ticket(
+        ticket: TicketCreate,
+        db: Session = Depends(get_db)
+    ):
+    try:
+        showtime_seat = db.query(ShowtimeSeat).filter(ShowtimeSeat.id == ticket.showtime_seat_id).first()
+        if not showtime_seat:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Showtime seat not found"
+            )
+
+        new_ticket = Ticket(
+            title=ticket.title,
+            description=ticket.description,
+            price=ticket.price,
+            showtime_seat_id=ticket.showtime_seat_id,
+            bill_id=ticket.bill_id   
+        )
+
+        db.add(new_ticket)
+        db.commit()
+
+        return {"ticket_id": new_ticket.id}
+    
+    except SQLAlchemyError as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=str(e)
+        )
+    
 @router.get("/{ticket_id}",
             response_model=TicketResponse,
             status_code=status.HTTP_200_OK)
@@ -205,42 +239,6 @@ async def search_tickets(
         )
     
 
-@router.post("/create",
-             status_code=status.HTTP_201_CREATED)
-async def create_ticket(
-        ticket: TicketCreate,
-        db: Session = Depends(get_db)
-    ):
-    try:
-        showtime_seat = db.query(ShowtimeSeat).filter(ShowtimeSeat.id == ticket.showtime_seat_id).first()
-        if not showtime_seat:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Showtime seat not found"
-            )
-
-        new_ticket = Ticket(
-            title=ticket.title,
-            description=ticket.description,
-            price=ticket.price,
-            showtime_seat_id=ticket.showtime_seat_id
-        )
-
-        db.add(new_ticket)
-        db.commit()
-
-        return JSONResponse(
-            status_code=status.HTTP_201_CREATED,
-            content={"message": "Ticket created successfully"}
-        )
-    
-    except SQLAlchemyError as e:
-        db.rollback()
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail=str(e)
-        )
-    
 
 @router.put("/update/{ticket_id}")
 async def update_ticket(

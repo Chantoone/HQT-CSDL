@@ -21,9 +21,9 @@ class BillCreate(BillBase):
     payment_time: datetime
     status: str
     value: int
-    staff_id: int
-    food_id: int
-    ticket_id: int
+    staff_id: Optional[int] = None  # ✅ Cho phép null
+    food_id: Optional[int] = None
+
 
 
 class BillUpdate(BillBase):

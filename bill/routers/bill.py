@@ -67,7 +67,45 @@ def get_all_bills_pageable(
             content={"message": str(e)}
         )
     
+@router.post("/create")
+def create_bill(
+        bill: BillCreate,
+        db: Session = Depends(get_db),
+    ):
+    try:
+        
+        
+        food = db.query(Food).filter(Food.id == bill.food_id).first()
+        if not food:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Food not found"
+            )
+        
+        
 
+        new_bill = Bill(
+            payment_method=bill.payment_method,
+            payment_time=bill.payment_time,
+            status=bill.status,
+            value=bill.value,
+            staff_id=bill.staff_id,
+            food_id=bill.food_id,
+         
+        )
+
+        db.add(new_bill)
+        db.commit()
+
+        return {"bill_id": new_bill.id}
+    
+    except SQLAlchemyError as e:
+        db.rollback()
+        return JSONResponse(
+            status_code=status.HTTP_409_CONFLICT,
+            content={"message": str(e)}
+        )
+    
 @router.get("/{bill_id}",
             response_model=BillResponse,
             status_code=status.HTTP_200_OK)
@@ -131,59 +169,7 @@ def search_bill(
         )
     
 
-@router.post("/create",
-             response_model=BillResponse)
-def create_bill(
-        bill: BillCreate,
-        db: Session = Depends(get_db),
-    ):
-    try:
-        staff = db.query(User).filter(User.id == bill.staff_id).first()
-        if not staff:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Staff not found"
-            )
-        
-        food = db.query(Food).filter(Food.id == bill.food_id).first()
-        if not food:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Food not found"
-            )
-        
-        ticket = db.query(Ticket).filter(Ticket.id == bill.ticket_id).first()
-        if not ticket:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Ticket not found"
-            )
 
-        new_bill = Bill(
-            payment_method=bill.payment_method,
-            payment_time=bill.payment_time,
-            status=bill.status,
-            value=bill.value,
-            staff_id=bill.staff_id,
-            food_id=bill.food_id,
-            ticket_id=bill.ticket_id
-        )
-
-        db.add(new_bill)
-        db.commit()
-
-        return JSONResponse(
-            status_code=status.HTTP_201_CREATED,
-            content={"message": "Bill created successfully"}
-        )
-    
-    except SQLAlchemyError as e:
-        db.rollback()
-        return JSONResponse(
-            status_code=status.HTTP_409_CONFLICT,
-            content={"message": str(e)}
-        )
-    
 
 @router.put("/update/{bill_id}")
 def update_bill(
@@ -212,6 +198,82 @@ def update_bill(
             content={"message": "Bill updated successfully"}
         )
     
+    except SQLAlchemyError as e:
+        db.rollback()
+        return JSONResponse(
+            status_code=status.HTTP_409_CONFLICT,
+            content={"message": str(e)}
+        )
+    
+
+@router.put("/update-value/{bill_id}", response_model=BillResponse, status_code=status.HTTP_200_OK)
+def update_bill_value(
+    bill_id: int,
+    db: Session = Depends(get_db)
+):
+    try:
+        # Retrieve the bill
+        bill = db.query(Bill).filter(Bill.id == bill_id).first()
+        if not bill:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Bill not found"
+            )
+
+        # Calculate total ticket cost
+        tickets = db.query(Ticket).filter(Ticket.bill_id == bill_id).all()
+        total_ticket_cost = sum(ticket.price for ticket in tickets)
+
+        # Add food cost if applicable
+        food_cost = 0
+        if bill.food_id:
+            food = db.query(Food).filter(Food.id == bill.food_id).first()
+            if food:
+                food_cost = food.price  # Assuming Food model has a 'price' field
+
+        # Update bill value
+        bill.value = total_ticket_cost + food_cost
+        db.commit()
+
+        return BillResponse.from_orm(bill)
+
+    except SQLAlchemyError as e:
+        db.rollback()
+        return JSONResponse(
+            status_code=status.HTTP_409_CONFLICT,
+            content={"message": str(e)}
+        )
+    
+
+@router.put("/update-all-values", status_code=status.HTTP_200_OK)
+def update_all_bill_values(db: Session = Depends(get_db)):
+    try:
+        # Retrieve all bills
+        bills = db.query(Bill).all()
+
+        for bill in bills:
+            # Calculate total ticket cost
+            tickets = db.query(Ticket).filter(Ticket.bill_id == bill.id).all()
+            total_ticket_cost = sum(ticket.price for ticket in tickets)
+
+            # Add food cost if applicable
+            food_cost = 0
+            if bill.food_id:
+                food = db.query(Food).filter(Food.id == bill.food_id).first()
+                if food:
+                    food_cost = food.price  # Assuming Food model has a 'price' field
+
+            # Update bill value
+            bill.value = total_ticket_cost + food_cost
+
+        # Commit all changes
+        db.commit()
+
+        return JSONResponse(
+            status_code=status.HTTP_200_OK,
+            content={"message": "All bill values updated successfully"}
+        )
+
     except SQLAlchemyError as e:
         db.rollback()
         return JSONResponse(

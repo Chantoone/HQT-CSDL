@@ -56,6 +56,7 @@ class ShowtimeSeatSearch(ShowtimeSeatUpdate):
 
 class SeatWithStatus(BaseModel):
     showtime_seat_id: int
+    id_seat: int  # Add id_seat to the schema
     seat_number: str
     seat_status: bool
 

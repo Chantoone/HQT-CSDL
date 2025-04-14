@@ -12,8 +12,10 @@ from room.models.room import Room
 from showtime.models.showtime import Showtime
 from showtime.schemas.showtime import *
 import math
-from datetime import date
+from datetime import date,datetime
 from babel.dates import format_date
+from seat.models.seat import Seat
+from showtime_seat.models.showtime_seat import ShowtimeSeat
 
 router = APIRouter(
     prefix="/showtimes",
@@ -185,6 +187,51 @@ def get_showtimes_by_date(
             detail=str(e)
         )
 
+@router.get(
+    "/times-by-cinema-film-date", 
+    response_model=List[dict], 
+    status_code=status.HTTP_200_OK
+)
+def get_times_by_cinema_film_date(
+    cinema_id: int,
+    film_id: int,
+    date: date,
+    db: Session = Depends(get_db)
+):
+    """
+    Get all showtimes (time and id) for a specific cinema, film, and date,
+    where the time is greater than the current time.
+    """
+    try:
+        current_time = datetime.now()
+        # Query showtimes based on cinema_id, film_id, and target_date
+        showtimes = db.query(Showtime).join(Room).filter(
+            Showtime.film_id == film_id,
+            Room.cinema_id == cinema_id,
+            func.date(Showtime.start_time) == date,
+            Showtime.start_time > current_time
+        ).order_by(Showtime.start_time).all()
+
+        if not showtimes:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="No showtimes found for the selected cinema, film, and date"
+            )
+
+        # Return a list of dictionaries with id_showtime and time
+        results = [
+            {"id_showtime": showtime.id, "time": showtime.start_time.strftime("%H:%M")}
+            for showtime in showtimes
+        ]
+        return results
+
+    except SQLAlchemyError as e:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=str(e)
+        )
+
+
 
 @router.get("/{showtime_id}", 
             response_model=ShowtimeResponse, 
@@ -282,10 +329,23 @@ def create_showtime(
         
         db.add(new_showtime)
         db.commit()
-        
+        db.refresh(new_showtime)
+
+        # Automatically create showtime_seat entries for the room
+        seats = db.query(Seat).filter(Seat.room_id == room.id).all()
+        for seat in seats:
+            new_showtime_seat = ShowtimeSeat(
+                seat_id=seat.id,
+                showtime_id=new_showtime.id,
+                seat_status=True
+            )
+            db.add(new_showtime_seat)
+
+        db.commit()
+
         return JSONResponse(
             status_code=status.HTTP_201_CREATED,
-            content={"message": "Showtime created successfully"}
+            content={"message": "Showtime and associated seats created successfully"}
         )
     
     except SQLAlchemyError as e:
@@ -419,5 +479,4 @@ def delete_showtime(
             status_code=status.HTTP_409_CONFLICT,
             detail=str(e)
         )
-
 
