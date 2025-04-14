@@ -67,3 +67,6 @@ class BillSearch(BaseModel):
 
     class Config:
         from_attributes = True
+
+class BILL(BaseModel):
+    pass
