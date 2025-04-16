@@ -10,7 +10,7 @@ class Bill(Base):
     id = Column(Integer, primary_key=True, nullable=False, index=True)
     payment_method = Column(String, nullable=False)
     payment_time = Column(TIMESTAMP(timezone=True), nullable=False,server_default=text('now()'))
-    status = Column(String, nullable=False,server_default=text('PAID'))
+    status = Column(String, nullable=False,server_default=text("'PAID'"))
     value = Column(Integer)
     staff_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
     food_id = Column(Integer, ForeignKey("foods.id", ondelete="CASCADE"))
