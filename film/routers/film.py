@@ -33,19 +33,30 @@ def get_allID(db: Session = Depends(get_db)):
         )
     
 
-@router.get("/all",
-            response_model=ListFilmResponse,
-            status_code=status.HTTP_200_OK)
-async def get_films(
-        db: Session = Depends(get_db),
-    ):
-
+@router.get("/all", response_model=ListFilmResponse)
+async def get_all_films(db: Session = Depends(get_db)):
     try:
-        films = db.query(Film).all()
+        films = (
+            db.query(Film)
+            .options(joinedload(Film.film_genres).joinedload(FilmGenre.genre))
+            .all()
+        )
+
+        # map genres thủ công cho từng film
+        result = []
+        for film in films:
+            film_data = jsonable_encoder(film)
+            film_data["genres"] = [
+                {
+                    "id": fg.genre.id,
+                    "name": fg.genre.name
+                } for fg in film.film_genres
+            ]
+            result.append(film_data)
 
         return ListFilmResponse(
-            films=films,
-            total_data=len(films)
+            films=result,
+            total_data=len(result)
         )
     
     except SQLAlchemyError as e:
@@ -140,15 +151,32 @@ async def get_films_pageable(
         page_size: int,
         db: Session = Depends(get_db),
     ):
-     
     try:
         total_count = db.query(Film).count()
         total_pages = math.ceil(total_count / page_size)
         offset = (page - 1) * page_size
-        films = db.query(Film).offset(offset).limit(page_size).all()
+
+        films = (
+            db.query(Film)
+            .options(joinedload(Film.film_genres).joinedload(FilmGenre.genre))
+            .offset(offset)
+            .limit(page_size)
+            .all()
+        )
+
+        result = []
+        for film in films:
+            film_data = jsonable_encoder(film)
+            film_data["genres"] = [
+                {
+                    "id": fg.genre.id,
+                    "name": fg.genre.name
+                } for fg in film.film_genres
+            ]
+            result.append(film_data)
 
         films_pageable_res = FilmPageableResponse(
-            films=films,
+            films=result,
             total_pages=total_pages,
             total_data=total_count
         )

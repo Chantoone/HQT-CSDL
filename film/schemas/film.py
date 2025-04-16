@@ -3,6 +3,14 @@ from pydantic import BaseModel
 from typing import List, Optional
 
 
+class GenreBase(BaseModel):
+    id: int
+    name: str
+
+    class Config:
+        from_attributes = True
+
+
 class FilmBase(BaseModel):
     title: Optional[str] = None
     description: Optional[str] = None
@@ -38,33 +46,6 @@ class FilmResponse(FilmBase):
         from_attributes = True
 
 
-class ListFilmResponse(BaseModel):
-    films: List[FilmResponse]
-    total_data: int
-
-    class Config:
-        from_attributes = True
-
-
-class FilmPageableResponse(ListFilmResponse):
-    total_pages: int
-
-    class Config:
-        from_attributes = True
-
-
-class FilmSearch(FilmBase):
-    pass
-
-
-class GenreBase(BaseModel):
-    id: int
-    name: str
-
-    class Config:
-        from_attributes = True
-
-
 class FILMRESPONSE(BaseModel):
     id: int
     title: str
@@ -86,4 +67,29 @@ class FILMRESPONSE(BaseModel):
     @property
     def genres(self):
         return [fg.genre for fg in self.film_genres]
+
+
+class ListFilmResponse(BaseModel):
+    films: List[FILMRESPONSE]
+    total_data: int
+
+    class Config:
+        from_attributes = True
+
+
+class FilmPageableResponse(ListFilmResponse):
+    total_pages: int
+
+    class Config:
+        from_attributes = True
+
+
+class FilmSearch(FilmBase):
+    pass
+
+
+
+
+
+
         
