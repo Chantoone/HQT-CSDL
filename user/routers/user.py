@@ -260,7 +260,6 @@ async def create_user(
         
         validate_pwd(new_user.password)
 
-        # Create all objects first without committing
         new_info = User(
             username=new_user.username, 
             full_name=new_user.full_name,
@@ -270,8 +269,6 @@ async def create_user(
             address=new_user.address
         )
         db.add(new_info)
-        
-        # Flush to get the user ID but don't commit yet
         db.flush()
 
         new_auth = AuthCredential(
@@ -280,14 +277,18 @@ async def create_user(
         )        
         db.add(new_auth)
 
-        register_role = db.query(Role).filter(Role.name == "user").first()
+        register_role = db.query(Role).filter(Role.id == new_user.role_id).first()
+        if not register_role:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, 
+                detail="Not found!"
+            )
+
         new_user_role = UserRole(
             user_id=new_info.id,
             role_id=register_role.id
         )
         db.add(new_user_role)
-
-        # Commit everything at once
         db.commit()
 
         return JSONResponse(
