@@ -34,7 +34,7 @@ class FilmCreate(FilmBase):
 
 
 class FilmUpdate(FilmBase):
-    pass
+    genre_ids: Optional[List[int]] = None
 
 
 class FilmResponse(FilmBase):

@@ -355,7 +355,6 @@ async def update_film(
         film: FilmUpdate,
         db: Session = Depends(get_db),
     ):
-    
     try:
         db_film = db.query(Film).filter(Film.id == film_id).first()
 
@@ -366,14 +365,33 @@ async def update_film(
             )
 
         update_data = film.dict(exclude_unset=True)
+        
+        # Cập nhật các field thông thường
         for key, value in update_data.items():
-            setattr(db_film, key, value)
+            if key != "genre_ids":
+                setattr(db_film, key, value)
+
+        # Cập nhật genres nếu có
+        if "genre_ids" in update_data:
+            # Xoá toàn bộ genre cũ
+            db.query(FilmGenre).filter(FilmGenre.film_id == film_id).delete()
+
+            # Thêm lại genre mới
+            for genre_id in film.genre_ids:
+                db.add(FilmGenre(film_id=film_id, genre_id=genre_id))
 
         db.commit()
         db.refresh(db_film)
 
-        return db_film
-    
+        # Chuẩn bị response
+        response = jsonable_encoder(db_film)
+        response["genres"] = [
+            {"id": fg.genre.id, "name": fg.genre.name}
+            for fg in db_film.film_genres
+        ]
+
+        return response
+
     except SQLAlchemyError as e:
         db.rollback()
         raise HTTPException(
