@@ -22,6 +22,7 @@ class FilmBase(BaseModel):
 class FilmCreate(FilmBase):
     title: str
     status: str
+    genre_ids: List[int] = []
 
 
 class FilmUpdate(FilmBase):
@@ -81,4 +82,8 @@ class FILMRESPONSE(BaseModel):
 
     class Config:
         from_attributes = True
+
+    @property
+    def genres(self):
+        return [fg.genre for fg in self.film_genres]
         

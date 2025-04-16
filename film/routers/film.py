@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import JSONResponse
+from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session,joinedload
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.sql.expression import func
@@ -17,21 +18,6 @@ router = APIRouter(
     tags=["Film"],
 )
     
-
-# @router.get("/allID",status_code=status.HTTP_200_OK)
-# def get_allID(db: Session = Depends(get_db)):
-#     try:
-#         films = db.query(Film.id).all()
-#         film_ids = [film.id for film in films]
-#         return {"film_ids": film_ids, "total": len(film_ids)}
-#
-#
-#     except SQLAlchemyError as e:
-#         raise HTTPException(
-#             status_code=status.HTTP_409_CONFLICT,
-#             detail=f"Lỗi cơ sở dữ liệu: {str(e)}"
-#         
-     
     
 @router.get("/allID",status_code=status.HTTP_200_OK)
 def get_allID(db: Session = Depends(get_db)):
@@ -40,12 +26,12 @@ def get_allID(db: Session = Depends(get_db)):
         film_ids = [film.id for film in films]
         return {"film_ids": film_ids, "total": len(film_ids)}
 
-
     except SQLAlchemyError as e:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail=f"Lỗi cơ sở dữ liệu: {str(e)}"
         )
+    
 
 @router.get("/all",
             response_model=ListFilmResponse,
@@ -181,7 +167,7 @@ async def get_film(film_id: int, db: Session = Depends(get_db)):
     try:
         film = (
             db.query(Film)
-            .options(joinedload(Film.film_genres).joinedload(FilmGenre.genre))  # ✅ sửa tại đây
+            .options(joinedload(Film.film_genres).joinedload(FilmGenre.genre))
             .filter(Film.id == film_id)
             .first()
         )
@@ -192,7 +178,11 @@ async def get_film(film_id: int, db: Session = Depends(get_db)):
                 detail="Không tìm thấy phim"
             )
 
-        return film
+        # Trả về thủ công dưới dạng dict
+        return {
+            **jsonable_encoder(film),
+            "genres": [GenreBase.from_orm(fg.genre) for fg in film.film_genres]
+        }
 
     except SQLAlchemyError as e:
         raise HTTPException(
@@ -240,16 +230,14 @@ async def search_film(
         )
     
 
-@router.post("/create",
-             response_model=FilmResponse,
-             status_code=status.HTTP_201_CREATED)
+@router.post("/create", response_model=FilmResponse, status_code=status.HTTP_201_CREATED)
 async def create_film(
         film: FilmCreate,
         db: Session = Depends(get_db),
     ):
-    
     try:
-        film = Film(
+        # 1. Tạo film mới
+        new_film = Film(
             title=film.title,
             description=film.description,
             duration=film.duration,
@@ -258,12 +246,21 @@ async def create_film(
             poster_path=film.poster_path, 
             status=film.status,
         )
-        
-        db.add(film)
-        db.commit()
-        db.refresh(film)
 
-        return film
+        db.add(new_film)
+        db.flush()
+
+        # 2. Tạo liên kết film - genres
+        for genre_id in film.genre_ids:
+            film_genre = FilmGenre(film_id=new_film.id, genre_id=genre_id)
+            db.add(film_genre)
+
+        db.commit()
+
+        return JSONResponse(
+            status_code=status.HTTP_201_CREATED,
+            content={"message": "Thêm phim thành công"}
+        )
     
     except SQLAlchemyError as e:
         db.rollback()
