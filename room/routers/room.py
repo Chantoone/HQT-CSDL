@@ -95,6 +95,35 @@ def get_rooms_pageable(
             detail=str(e)
         )
 
+@router.get('/by-cinema-id/{cinema_id}',
+            response_model=ListRoomResponse,
+            status_code=status.HTTP_200_OK)
+def get_room_by_cinema_id(
+        cinema_id: int,
+        db: Session = Depends(get_db)
+    ):
+    
+    try:
+        room = db.query(Room).filter(Room.cinema_id == cinema_id).all()
+
+        if not room:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail='Room not found'
+            )
+
+        return ListRoomResponse(
+            rooms=room,
+            total_data=len(room)
+        )
+    
+    except SQLAlchemyError as e:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT, 
+            detail=str(e)
+        )
+
+
 
 @router.get('/{room_id}',
             response_model=RoomResponse,
