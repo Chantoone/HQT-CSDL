@@ -250,12 +250,12 @@ def update_all_bill_values(db: Session = Depends(get_db)):
     try:
         # Retrieve all bills
         bills = db.query(Bill).all()
-
+        i=0
         for bill in bills:
             # Calculate total ticket cost
             tickets = db.query(Ticket).filter(Ticket.bill_id == bill.id).all()
             total_ticket_cost = sum(ticket.price for ticket in tickets)
-
+            print(f"vong lap thu ${i}")
             # Add food cost if applicable
             food_cost = 0
             if bill.food_id:

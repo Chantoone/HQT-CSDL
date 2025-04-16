@@ -25,7 +25,7 @@ class PromotionUpdate(PromotionBase):
 
 class PromotionResponse(PromotionBase):
     id: int
-    staff: UserBase
+    staff: Optional[UserBase] = None    
     created_at: datetime
 
     class Config:
