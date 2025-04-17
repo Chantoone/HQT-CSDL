@@ -348,7 +348,7 @@ async def update_film_status(db: Session = Depends(get_db)):
     
 
 @router.put("/update/{film_id}",
-            response_model=FilmResponse,
+            response_model=FILMRESPONSE,
             status_code=status.HTTP_200_OK)
 async def update_film(
         film_id: int,
