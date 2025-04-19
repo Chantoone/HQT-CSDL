@@ -20,7 +20,7 @@ class RoomCreate(RoomBase):
 
 
 class RoomUpdate(RoomBase):
-    cinema_id: int
+    cinema_id: Optional[int] = None
 
 
 class RoomResponse(RoomBase):
