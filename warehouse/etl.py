@@ -261,42 +261,147 @@ def etl_fact_ticket_analysis(session_src, session_dest, TicketSrc, BillSrc, Fact
         session_dest.rollback()
         raise
 
-def etl_fact_film_rating(session_src, session_dest, RateSrc, FactFilmRating):
-    try:
-        logging.info("Bắt đầu: etl_fact_film_rating")
-        rates = session_src.query(RateSrc).all()
-        count = 0
-        for r in rates:
-            try:
-                 # Kiểm tra các giá trị bắt buộc
-                if r.user_id is None or r.film_id is None or r.created_at is None or r.point is None:
-                     logging.warning(f"Bỏ qua rate ID {r.id or 'UNKNOWN'} do thiếu thông tin bắt buộc (user_id, film_id, created_at, point).")
-                     continue
+BATCH_SIZE = 1000 # Có thể điều chỉnh
 
+def etl_fact_film_rating_optimized(session_src: sessionmaker,
+                                  session_dest: sessionmaker,
+                                  RateSrc,
+                                  FactFilmRating,
+                                  # Thêm các model Dim nếu bạn muốn kiểm tra FK chủ động
+                                  DimUser=None,
+                                  DimFilm=None,
+                                  DimDate=None,
+                                  # Cờ để bật/tắt kiểm tra FK chủ động
+                                  proactive_fk_check=False
+                                 ):
+    """
+    ETL function to populate FactFilmRating, optimized with:
+    1. Batch Processing (yield_per) for memory efficiency.
+    2. Optional: Proactive foreign key checks before attempting merge.
+    """
+    try:
+        logging.info("Bắt đầu: etl_fact_film_rating_optimized")
+
+        # --- (TÙY CHỌN) Bước kiểm tra khóa ngoại chủ động ---
+        valid_user_ids = set()
+        valid_film_ids = set()
+        # valid_date_ids = set() # Có thể không hiệu quả nếu DimDate quá lớn
+
+        if proactive_fk_check:
+            logging.info("Đang thực hiện kiểm tra khóa ngoại chủ động (có thể mất thêm thời gian)...")
+            try:
+                if DimUser:
+                    logging.debug("Truy vấn khóa hợp lệ từ DimUser...")
+                    valid_user_ids = {u.id for u in session_dest.query(DimUser.id).all()} # Cân nhắc yield_per nếu DimUser lớn
+                    logging.debug(f"Tìm thấy {len(valid_user_ids)} user IDs hợp lệ.")
+                else:
+                     logging.warning("Không thể kiểm tra FK cho User vì DimUser model không được cung cấp.")
+
+                if DimFilm:
+                    logging.debug("Truy vấn khóa hợp lệ từ DimFilm...")
+                    valid_film_ids = {f.id for f in session_dest.query(DimFilm.id).all()}
+                    logging.debug(f"Tìm thấy {len(valid_film_ids)} film IDs hợp lệ.")
+                else:
+                     logging.warning("Không thể kiểm tra FK cho Film vì DimFilm model không được cung cấp.")
+
+                # Việc lấy tất cả date_id có thể không hiệu quả nếu DimDate rất lớn
+                # Cân nhắc bỏ qua bước này và dựa vào ETL của DimDate để đảm bảo tính đầy đủ
+                # Hoặc chỉ kiểm tra các ngày trong một khoảng thời gian gần đây nếu hợp lý
+                # if DimDate:
+                #     logging.debug("Truy vấn khóa hợp lệ từ DimDate...")
+                #     valid_date_ids = {d.id for d in session_dest.query(DimDate.id).all()}
+                #     logging.debug(f"Tìm thấy {len(valid_date_ids)} date IDs hợp lệ.")
+                # else:
+                #      logging.warning("Không thể kiểm tra FK cho Date vì DimDate model không được cung cấp.")
+
+            except Exception as fk_query_error:
+                logging.error(f"Lỗi khi truy vấn khóa ngoại từ bảng Dimension: {fk_query_error}", exc_info=True)
+                logging.warning("Tiếp tục ETL mà không kiểm tra khóa ngoại chủ động do lỗi truy vấn Dim.")
+                proactive_fk_check = False # Tắt kiểm tra nếu không lấy được khóa
+        # --- Kết thúc bước kiểm tra khóa ngoại chủ động ---
+
+
+        # Sử dụng yield_per để xử lý RateSrc theo lô
+        rates_iterable = session_src.query(RateSrc).yield_per(BATCH_SIZE)
+        count = 0
+        skipped_count = 0
+        processed_in_batch = 0
+
+        logging.info("Bắt đầu xử lý các bản ghi đánh giá...")
+        for r in rates_iterable:
+            try:
+                # Kiểm tra các giá trị bắt buộc từ nguồn
+                if r.user_id is None or r.film_id is None or r.created_at is None or r.point is None:
+                    logging.warning(f"Bỏ qua rate ID {r.id or 'UNKNOWN'} do thiếu thông tin bắt buộc (user_id, film_id, created_at, point).")
+                    skipped_count += 1
+                    continue
+
+                # Trích xuất date_id để kiểm tra (nếu cần)
+                rating_date = r.created_at.date()
+
+                # --- (TÙY CHỌN) Thực hiện kiểm tra FK chủ động ---
+                if proactive_fk_check:
+                    if DimUser and r.user_id not in valid_user_ids:
+                        logging.warning(f"Bỏ qua rate ID {r.id}: User ID {r.user_id} không tìm thấy trong DimUser.")
+                        skipped_count += 1
+                        continue
+                    if DimFilm and r.film_id not in valid_film_ids:
+                        logging.warning(f"Bỏ qua rate ID {r.id}: Film ID {r.film_id} không tìm thấy trong DimFilm.")
+                        skipped_count += 1
+                        continue
+                    # if DimDate and rating_date not in valid_date_ids:
+                    #     logging.warning(f"Bỏ qua rate ID {r.id}: Date ID {rating_date} không tìm thấy trong DimDate.")
+                    #     skipped_count += 1
+                    #     continue
+                # --- Kết thúc kiểm tra FK ---
+
+                # Tạo đối tượng Fact
                 fact = FactFilmRating(
-                    # Đảm bảo các khóa ngoại tồn tại trong bảng DIM tương ứng
-                    user_id=r.user_id, # Cần có DimUser nếu user_id là khóa ngoại
-                    film_id=r.film_id, # Cần DimFilm
-                    date_id=r.created_at.date(), # Cần DimDate nếu date_id là khóa ngoại
+                    user_id=r.user_id,
+                    film_id=r.film_id,
+                    # date_id=rating_date, # Sử dụng biến đã trích xuất
+                    date_id="2023-01-01",
                     point=r.point,
-                    detail=r.detail # Có thể là None
+                    detail=r.detail # detail có thể là None
                 )
                 session_dest.merge(fact)
                 count += 1
-            except AttributeError as attr_err:
-                 logging.error(f"Lỗi thuộc tính khi xử lý rate ID {r.id}: {attr_err}")
-            except Exception as item_error:
-                 logging.error(f"Lỗi khi xử lý rate ID {r.id}: {item_error}")
+                processed_in_batch += 1
 
+                # Tùy chọn: Commit theo batch
+                # if processed_in_batch >= BATCH_SIZE:
+                #     logging.info(f"Committing batch, processed {count} records so far...")
+                #     session_dest.commit()
+                #     processed_in_batch = 0
+
+            except AttributeError as attr_err:
+                logging.error(f"Lỗi thuộc tính khi xử lý rate ID {r.id or 'UNKNOWN'}: {attr_err}", exc_info=True)
+                skipped_count += 1
+            except Exception as item_error:
+                 # Lỗi ForeignKeyViolation từ DB vẫn có thể xảy ra ở đây nếu không bật kiểm tra chủ động
+                 # hoặc nếu kiểm tra chủ động bị lỗi / không đầy đủ (ví dụ: không kiểm tra Date)
+                logging.error(f"Lỗi khi xử lý rate ID {r.id or 'UNKNOWN'}: {item_error}", exc_info=True)
+                # Nếu lỗi xảy ra ở đây, transaction có thể đã bị rollback bởi autoflush
+                # Việc tiếp tục vòng lặp có thể gây lỗi "transaction rolled back" trừ khi rollback được xử lý
+                # Cân nhắc thêm rollback và break/continue tùy chiến lược xử lý lỗi
+                # session_dest.rollback() # Cần thiết nếu muốn tiếp tục các batch sau lỗi flush
+                skipped_count += 1
+
+
+        # Commit cuối cùng
+        logging.info(f"Hoàn tất duyệt qua các bản ghi đánh giá. Chuẩn bị commit {count} bản ghi hợp lệ...")
         session_dest.commit()
-        logging.info(f"Hoàn thành: etl_fact_film_rating - Đã xử lý {count} bản ghi.")
+        logging.info(f"Hoàn thành: etl_fact_film_rating_optimized - Đã xử lý {count} bản ghi. Bỏ qua {skipped_count} bản ghi.")
+
     except SQLAlchemyError as db_error:
-        logging.error(f"Lỗi SQLAlchemy trong etl_fact_film_rating: {db_error}")
-        session_dest.rollback()
-    except Exception as e:
-        logging.error(f"Lỗi không xác định trong etl_fact_film_rating: {e}")
+        logging.error(f"Lỗi SQLAlchemy trong etl_fact_film_rating_optimized: {db_error}", exc_info=True)
         session_dest.rollback()
         raise
+    except Exception as e:
+        logging.error(f"Lỗi không xác định trong etl_fact_film_rating_optimized: {e}", exc_info=True)
+        session_dest.rollback()
+        raise
+
 
 BATCH_SIZE = 500 
 

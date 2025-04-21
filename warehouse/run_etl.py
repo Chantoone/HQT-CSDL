@@ -67,14 +67,14 @@ if __name__ == "__main__":
         # --- Thực thi ETL cho các bảng FACT ---
         logging.info("--- Bắt đầu ETL FACT ---")
         # etl_fact_ticket_analysis(SrcSession, DestSession, Ticket, Bill, FactTicketAnalysis)
-        # etl_fact_film_rating(SrcSession, DestSession, Rate, FactFilmRating)
+        etl_fact_film_rating_optimized(SrcSession, DestSession, Rate, FactFilmRating)
         # etl_fact_revenue_optimized_v4(
         #     SrcSession, DestSession,
         #     Ticket, # Truyền TicketSrc là model chính
         #     Bill, ShowtimeSeat, Showtime, Room, # Các model phụ trợ
         #     FactRevenue
         # )
-        etl_fact_showtime_fillrate_optimized_v2(SrcSession, DestSession, Showtime, ShowtimeSeat, FactShowtimeFillRate)
+        # etl_fact_showtime_fillrate_optimized_v2(SrcSession, DestSession, Showtime, ShowtimeSeat, FactShowtimeFillRate)
         # etl_fact_promotion_analysis_optimized(SrcSession, DestSession, Bill, BillProm, FactPromotionAnalysis)
         logging.info("--- Hoàn thành ETL FACT ---")
 

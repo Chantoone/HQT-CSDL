@@ -224,15 +224,23 @@ def update_room(
     ):
     
     try:
-        room = db.query(Room).filter(Room.id == room_id).first()
+        room_up = db.query(Room).filter(Room.id == room_id)
 
-        if not room:
+        if not room_up.first():
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail='Room not found'
             )
+        
+        if room.cinema_id:
+            cinema = db.query(Cinema).filter(Cinema.id == room.cinema_id).first()
+            if not cinema:
+                raise HTTPException(
+                    status_code=status.HTTP_404_NOT_FOUND,
+                    detail='Cinema not found'
+                )
 
-        db.query(Room).filter(Room.id == room_id).update(room.dict())
+        room_up.update(room.dict(exclude_unset=True))
         db.commit()
 
         return JSONResponse(

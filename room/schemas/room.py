@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime, date
-from cinema.schemas.cinema import CinemaBase
+from cinema.schemas.cinema import CinemaResponse
 
 
 class RoomBase(BaseModel):
@@ -20,13 +20,13 @@ class RoomCreate(RoomBase):
 
 
 class RoomUpdate(RoomBase):
-    cinema_id: int
+    cinema_id: Optional[int] = None
 
 
 class RoomResponse(RoomBase):
     id: int
     is_active: Optional[bool] = None
-    cinema: CinemaBase
+    cinema: CinemaResponse
     created_at: datetime
 
     class Config:
