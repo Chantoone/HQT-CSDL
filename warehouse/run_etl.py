@@ -42,8 +42,8 @@ if __name__ == "__main__":
     SrcSession = None
     DestSession = None
     try:
-        src_engine = create_engine("postgresql://postgres:admin@localhost:5432/hqt_csdl")
-        dest_engine = create_engine("postgresql://postgres:admin@localhost:5432/warehouse")
+        src_engine = create_engine("postgresql://postgres:123456@localhost:5432/cinema")
+        dest_engine = create_engine("postgresql://postgres:123456@localhost:5432/warehouse")
 
         SrcSessionMaker = sessionmaker(bind=src_engine)
         DestSessionMaker = sessionmaker(bind=dest_engine)

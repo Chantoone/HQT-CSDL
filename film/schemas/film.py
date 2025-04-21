@@ -59,14 +59,10 @@ class FILMRESPONSE(BaseModel):
     director: Optional[str]
     created_at: datetime
     is_active: Optional[bool] = True
-    genres: Optional[List[GenreBase]] = []
+    genres: Optional[List[GenreBase]] = []  # Explicitly define genres as a field
 
     class Config:
         from_attributes = True
-
-    @property
-    def genres(self):
-        return [fg.genre for fg in self.film_genres]
 
 
 class ListFilmResponse(BaseModel):
@@ -92,4 +88,3 @@ class FilmSearch(FilmBase):
 
 
 
-        
