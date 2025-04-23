@@ -242,8 +242,8 @@ def etl_fact_ticket_analysis(session_src, session_dest, TicketSrc, BillSrc, Fact
                     ticket_id=t.id,
                     bill_id=bill.id,
                     price=t.price,
-                    date_id=t.created_at.date(), # Cần đảm bảo t.created_at không None
-                    time_id=get_time_id(t.created_at), # Hàm get_time_id đã xử lý None
+                    date_id=bill.payment_time.date(), # Cần đảm bảo t.created_at không None
+                    time_id=get_time_id(bill.payment_time), # Hàm get_time_id đã xử lý None
                     payment_method_id=payment_method_id,
                     purchase_type_id=get_purchase_type_id(bill.staff_id)
                 )
@@ -887,7 +887,7 @@ def etl_fact_revenue_incremental(session_src, session_dest, BillSrc, TicketSrc, 
     update_last_loaded_time(session_dest, "fact_revenue", max_time)
     logging.info(f"Hoàn thành: etl_fact_revenue_incremental - Đã xử lý {count} bản ghi mới.")
 
-def etl_fact_showtime_fillrate_incremental(session_src, session_dest, ShowtimeSrc, ShowtimeSeatSrc, FactShowtimeFillRate):
+def etl_fact_showtime_fillrate_incremental(session_src, session_dest, ShowtimeSrc, ShowtimeSeatSrc, TicketSrc, FactShowtimeFillRate):
     """
     Incremental ETL for the showtime fill rate fact table.
     Only processes showtimes with start_time after the last loaded time.
@@ -901,7 +901,6 @@ def etl_fact_showtime_fillrate_incremental(session_src, session_dest, ShowtimeSr
         .filter(ShowtimeSrc.start_time > last_time)
         .options(
             selectinload(ShowtimeSrc.showtime_seat)
-            .joinedload(ShowtimeSeatSrc.ticket)
         )
         .yield_per(BATCH_SIZE)
     )
@@ -923,8 +922,17 @@ def etl_fact_showtime_fillrate_incremental(session_src, session_dest, ShowtimeSr
                 logging.warning(f"Showtime ID {s.id} không có ghế nào (total=0), bỏ qua.")
                 continue
             
-            # Tính tỷ lệ đặt ghế
-            booked = sum(1 for ss in showtime_seats if ss.ticket is not None)
+            # Lấy danh sách seat_id từ showtime này
+            seat_ids = [ss.id for ss in showtime_seats]
+            
+            # THAY ĐỔI: Đếm số lượng ticket cho các ghế này
+            # Sử dụng truy vấn trực tiếp đếm số ticket thay vì ss.ticket
+            booked = session_src.query(TicketSrc).filter(
+                TicketSrc.showtime_seat_id.in_(seat_ids)
+            ).count()
+            
+            logging.debug(f"Showtime ID {s.id}: Tổng ghế = {total}, Ghế đã đặt = {booked}")
+            
             fill_rate = booked / total
             
             # Tạo fact
@@ -950,7 +958,7 @@ def etl_fact_showtime_fillrate_incremental(session_src, session_dest, ShowtimeSr
     session_dest.commit()
     update_last_loaded_time(session_dest, "fact_showtime_fillrate", max_time)
     logging.info(f"Hoàn thành: etl_fact_showtime_fillrate_incremental - Đã xử lý {count} bản ghi mới.")
-
+    
 def etl_fact_promotion_analysis_incremental(session_src, session_dest, BillSrc, BillPromSrc, FactPromotionAnalysis):
     """
     Incremental ETL for the promotion analysis fact table.
