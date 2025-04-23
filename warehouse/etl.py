@@ -2,7 +2,10 @@ import logging
 from sqlalchemy.orm import sessionmaker, joinedload, selectinload
 from sqlalchemy.exc import SQLAlchemyError
 from datetime import datetime
-from datetime import datetime
+from warehouse.etl_metadata.utils.etl_metadata import get_last_loaded_time, update_last_loaded_time
+
+
+BATCH_SIZE = 1000 # Có thể điều chỉnh
 
 # --- Hàm trợ giúp ---
 def get_time_id(dt: datetime):
@@ -14,7 +17,7 @@ def get_purchase_type_id(staff_id):
     # Trả về 1 nếu mua tại quầy (có staff_id), 2 nếu mua online (staff_id là None)
     return 1 if staff_id is not None else 2
 
-def map_payment_method_to_id(method_text: str) -> int | None: # Cho phép trả về None
+def map_payment_method_to_id(method_text: str):
     if method_text is None:
         return None
     mapping = {
@@ -256,12 +259,11 @@ def etl_fact_ticket_analysis(session_src, session_dest, TicketSrc, BillSrc, Fact
     except SQLAlchemyError as db_error:
         logging.error(f"Lỗi SQLAlchemy trong etl_fact_ticket_analysis: {db_error}")
         session_dest.rollback()
+        raise
     except Exception as e:
         logging.error(f"Lỗi không xác định trong etl_fact_ticket_analysis: {e}")
         session_dest.rollback()
         raise
-
-BATCH_SIZE = 1000 # Có thể điều chỉnh
 
 def etl_fact_film_rating_optimized(session_src: sessionmaker,
                                   session_dest: sessionmaker,
@@ -401,9 +403,6 @@ def etl_fact_film_rating_optimized(session_src: sessionmaker,
         logging.error(f"Lỗi không xác định trong etl_fact_film_rating_optimized: {e}", exc_info=True)
         session_dest.rollback()
         raise
-
-
-BATCH_SIZE = 500 
 
 def etl_fact_revenue_optimized_v4(session_src: sessionmaker,
                                   session_dest: sessionmaker,
@@ -692,3 +691,327 @@ def etl_fact_promotion_analysis_optimized(session_src: sessionmaker,
         logging.error(f"Lỗi không xác định trong etl_fact_promotion_analysis_optimized: {e}", exc_info=True)
         session_dest.rollback()
         raise
+
+
+# --- Incremental ETL Functions ---
+def etl_fact_ticket_analysis_incremental(session_src, session_dest, Ticket, Bill, FactTicketAnalysis):
+    """
+    Incremental ETL for the ticket analysis fact table.
+    Only processes tickets created after the last loaded time.
+    """
+    last_time = get_last_loaded_time(session_dest, "fact_ticket_analysis")
+    logging.info(f"Bắt đầu: etl_fact_ticket_analysis_incremental (từ {last_time})")
+
+    tickets = (
+        session_src.query(Ticket)
+        .join(Bill)
+        .filter(Ticket.created_at > last_time)
+        .all()
+    )
+
+    max_time = last_time
+    count = 0
+    for t in tickets:
+        try:
+            bill = t.bill
+            created_at = t.created_at
+            
+            if bill is None or bill.payment_method is None:
+                logging.warning(f"Bỏ qua Ticket ID {t.id}: Bill liên kết không hợp lệ.")
+                continue
+                
+            payment_method_id = map_payment_method_to_id(bill.payment_method)
+            if payment_method_id is None:
+                logging.warning(f"Bỏ qua Ticket ID {t.id}: Không thể map payment_method '{bill.payment_method}'.")
+                continue
+                
+            fact = FactTicketAnalysis(
+                ticket_id=t.id,
+                bill_id=bill.id,
+                price=t.price,
+                date_id=created_at.date(),
+                time_id=get_time_id(created_at),
+                payment_method_id=payment_method_id,
+                purchase_type_id=get_purchase_type_id(bill.staff_id)
+            )
+            session_dest.merge(fact)
+            count += 1
+            
+            if created_at > max_time:
+                max_time = created_at
+        except Exception as item_error:
+            logging.error(f"Lỗi khi xử lý ticket ID {t.id}: {item_error}")
+
+    session_dest.commit()
+    update_last_loaded_time(session_dest, "fact_ticket_analysis", max_time)
+    logging.info(f"Hoàn thành: etl_fact_ticket_analysis_incremental - Đã xử lý {count} bản ghi mới.")
+
+def etl_fact_film_rating_incremental(session_src, session_dest, RateSrc, FactFilmRating):
+    """
+    Incremental ETL for the film rating fact table.
+    Only processes ratings created after the last loaded time.
+    """
+    last_time = get_last_loaded_time(session_dest, "fact_film_rating")
+    logging.info(f"Bắt đầu: etl_fact_film_rating_incremental (từ {last_time})")
+    
+    rates = (
+        session_src.query(RateSrc)
+        .filter(RateSrc.created_at > last_time)
+        .yield_per(BATCH_SIZE)
+    )
+    
+    max_time = last_time
+    count = 0
+    skipped_count = 0
+    
+    for r in rates:
+        try:
+            # Kiểm tra các giá trị bắt buộc
+            if r.user_id is None or r.film_id is None or r.created_at is None or r.point is None:
+                logging.warning(f"Bỏ qua rate ID {r.id or 'UNKNOWN'} do thiếu thông tin bắt buộc.")
+                skipped_count += 1
+                continue
+            
+            # Tạo đối tượng Fact
+            rating_date = r.created_at.date()
+            fact = FactFilmRating(
+                user_id=r.user_id,
+                film_id=r.film_id,
+                date_id=rating_date,
+                point=r.point,
+                detail=r.detail
+            )
+            session_dest.merge(fact)
+            count += 1
+            
+            if r.created_at > max_time:
+                max_time = r.created_at
+                
+        except Exception as item_error:
+            logging.error(f"Lỗi khi xử lý rate ID {r.id or 'UNKNOWN'}: {item_error}")
+            skipped_count += 1
+    
+    session_dest.commit()
+    update_last_loaded_time(session_dest, "fact_film_rating", max_time)
+    logging.info(f"Hoàn thành: etl_fact_film_rating_incremental - Đã xử lý {count} bản ghi mới. Bỏ qua {skipped_count} bản ghi.")
+
+def etl_fact_revenue_incremental(session_src, session_dest, BillSrc, TicketSrc, ShowtimeSeatSrc, ShowtimeSrc, RoomSrc, FactRevenue):
+    """
+    Incremental ETL for the revenue fact table.
+    Only processes bills with payment_time after the last loaded time.
+    """
+    last_time = get_last_loaded_time(session_dest, "fact_revenue")
+    logging.info(f"Bắt đầu: etl_fact_revenue_incremental (từ {last_time})")
+    
+    # Truy vấn từ Bill để lấy các Bill mới
+    query = (
+        session_src.query(BillSrc)
+        .filter(BillSrc.payment_time > last_time)
+        .yield_per(BATCH_SIZE)
+    )
+    
+    max_time = last_time
+    count = 0
+    
+    for bill in query:
+        try:
+            # Kiểm tra giá trị bắt buộc của Bill
+            if bill.payment_time is None or bill.payment_method is None:
+                logging.warning(f"Bỏ qua Bill ID {bill.id}: thiếu thông tin payment_time hoặc payment_method.")
+                continue
+            
+            # Lấy tất cả ticket liên quan đến bill này
+            tickets = session_src.query(TicketSrc).filter(TicketSrc.bill_id == bill.id).all()
+            if not tickets or len(tickets) == 0:
+                logging.warning(f"Bỏ qua Bill ID {bill.id}: không tìm thấy ticket liên kết.")
+                continue
+            
+            # Lấy thông tin film_id và cinema_id từ ticket đầu tiên
+            ticket = tickets[0]
+            
+            # Lấy showtime_seat từ ticket
+            showtime_seat = session_src.query(ShowtimeSeatSrc).filter(ShowtimeSeatSrc.id == ticket.showtime_seat_id).first()
+            if not showtime_seat:
+                logging.warning(f"Bỏ qua Bill ID {bill.id}, Ticket ID {ticket.id}: không tìm thấy showtime_seat.")
+                continue
+            
+            # Lấy showtime từ showtime_seat
+            showtime = session_src.query(ShowtimeSrc).filter(ShowtimeSrc.id == showtime_seat.showtime_id).first()
+            if not showtime:
+                logging.warning(f"Bỏ qua Bill ID {bill.id}, ShowtimeSeat ID {showtime_seat.id}: không tìm thấy showtime.")
+                continue
+            
+            # Lấy film_id từ showtime
+            if not showtime.film_id:
+                logging.warning(f"Bỏ qua Bill ID {bill.id}, Showtime ID {showtime.id}: thiếu thông tin film_id.")
+                continue
+            
+            # Lấy room từ showtime
+            room = session_src.query(RoomSrc).filter(RoomSrc.id == showtime.room_id).first()
+            if not room:
+                logging.warning(f"Bỏ qua Bill ID {bill.id}, Showtime ID {showtime.id}: không tìm thấy room.")
+                continue
+            
+            # Lấy cinema_id từ room
+            if not room.cinema_id:
+                logging.warning(f"Bỏ qua Bill ID {bill.id}, Room ID {room.id}: thiếu thông tin cinema_id.")
+                continue
+            
+            # Ánh xạ payment_method
+            payment_method_id = map_payment_method_to_id(bill.payment_method)
+            if payment_method_id is None:
+                logging.warning(f"Bỏ qua Bill ID {bill.id}: Không thể map payment_method '{bill.payment_method}'.")
+                continue
+            
+            # Tạo fact
+            fact = FactRevenue(
+                bill_id=bill.id,
+                date_id=bill.payment_time.date(),
+                time_id=get_time_id(bill.payment_time),
+                film_id=showtime.film_id,
+                cinema_id=room.cinema_id,
+                value=bill.value,
+                payment_method_id=payment_method_id,
+                purchase_type_id=get_purchase_type_id(bill.staff_id)
+            )
+            session_dest.merge(fact)
+            count += 1
+            
+            if bill.payment_time > max_time:
+                max_time = bill.payment_time
+                
+        except Exception as item_error:
+            logging.error(f"Lỗi khi xử lý bill ID {bill.id}: {item_error}")
+    
+    session_dest.commit()
+    update_last_loaded_time(session_dest, "fact_revenue", max_time)
+    logging.info(f"Hoàn thành: etl_fact_revenue_incremental - Đã xử lý {count} bản ghi mới.")
+
+def etl_fact_showtime_fillrate_incremental(session_src, session_dest, ShowtimeSrc, ShowtimeSeatSrc, FactShowtimeFillRate):
+    """
+    Incremental ETL for the showtime fill rate fact table.
+    Only processes showtimes with start_time after the last loaded time.
+    """
+    last_time = get_last_loaded_time(session_dest, "fact_showtime_fillrate")
+    logging.info(f"Bắt đầu: etl_fact_showtime_fillrate_incremental (từ {last_time})")
+    
+    # Truy vấn các showtime mới
+    query = (
+        session_src.query(ShowtimeSrc)
+        .filter(ShowtimeSrc.start_time > last_time)
+        .options(
+            selectinload(ShowtimeSrc.showtime_seat)
+            .joinedload(ShowtimeSeatSrc.ticket)
+        )
+        .yield_per(BATCH_SIZE)
+    )
+    
+    max_time = last_time
+    count = 0
+    
+    for s in query:
+        try:
+            if s.start_time is None or s.film_id is None:
+                logging.warning(f"Bỏ qua Showtime ID {s.id}: thiếu thông tin start_time hoặc film_id.")
+                continue
+            
+            # Truy cập thông tin ghế
+            showtime_seats = s.showtime_seat
+            total = len(showtime_seats)
+            
+            if total == 0:
+                logging.warning(f"Showtime ID {s.id} không có ghế nào (total=0), bỏ qua.")
+                continue
+            
+            # Tính tỷ lệ đặt ghế
+            booked = sum(1 for ss in showtime_seats if ss.ticket is not None)
+            fill_rate = booked / total
+            
+            # Tạo fact
+            fact = FactShowtimeFillRate(
+                date_id=s.start_time.date(),
+                film_id=s.film_id,
+                showtime_id=s.id,
+                total_seats=total,
+                booked_seats=booked,
+                fill_rate=fill_rate
+            )
+            session_dest.merge(fact)
+            count += 1
+            
+            if s.start_time > max_time:
+                max_time = s.start_time
+                
+        except ZeroDivisionError:
+            logging.error(f"Lỗi chia cho 0 khi xử lý showtime ID {s.id}")
+        except Exception as item_error:
+            logging.error(f"Lỗi khi xử lý showtime ID {s.id}: {item_error}")
+    
+    session_dest.commit()
+    update_last_loaded_time(session_dest, "fact_showtime_fillrate", max_time)
+    logging.info(f"Hoàn thành: etl_fact_showtime_fillrate_incremental - Đã xử lý {count} bản ghi mới.")
+
+def etl_fact_promotion_analysis_incremental(session_src, session_dest, BillSrc, BillPromSrc, FactPromotionAnalysis):
+    """
+    Incremental ETL for the promotion analysis fact table.
+    Only processes bills with payment_time after the last loaded time.
+    """
+    last_time = get_last_loaded_time(session_dest, "fact_promotion_analysis")
+    logging.info(f"Bắt đầu: etl_fact_promotion_analysis_incremental (từ {last_time})")
+    
+    # Truy vấn trước bill_id với khuyến mãi đã được áp dụng sau lần ETL cuối
+    try:
+        logging.info("Truy vấn bill_id sử dụng khuyến mãi từ lần ETL trước...")
+        # Lấy danh sách các bill mới có sử dụng khuyến mãi
+        promo_bills_query = (
+            session_src.query(BillPromSrc.bill_id)
+            .join(BillSrc, BillPromSrc.bill_id == BillSrc.id)
+            .filter(BillSrc.payment_time > last_time)
+            .distinct()
+        )
+        
+        promo_bill_ids = {row.bill_id for row in promo_bills_query.all()}
+        logging.info(f"Đã tìm thấy {len(promo_bill_ids)} bill_id mới đã dùng khuyến mãi.")
+    except Exception as e:
+        logging.error(f"Lỗi khi truy vấn bill_id từ BillPromSrc: {e}", exc_info=True)
+        raise
+    
+    # Truy vấn các bill mới
+    bills_query = (
+        session_src.query(BillSrc)
+        .filter(BillSrc.payment_time > last_time)
+        .yield_per(BATCH_SIZE)
+    )
+    
+    max_time = last_time
+    count = 0
+    
+    for b in bills_query:
+        try:
+            if b.payment_time is None:
+                logging.warning(f"Bỏ qua Bill ID {b.id}: payment_time is None.")
+                continue
+            
+            # Kiểm tra xem bill có dùng khuyến mãi không
+            used = b.id in promo_bill_ids
+            
+            # Tạo fact
+            fact = FactPromotionAnalysis(
+                bill_id=b.id,
+                date_id=b.payment_time.date(),
+                promotion_used=used,
+                point=0  # Giả sử point không được sử dụng hoặc luôn là 0
+            )
+            session_dest.merge(fact)
+            count += 1
+            
+            if b.payment_time > max_time:
+                max_time = b.payment_time
+                
+        except Exception as item_error:
+            logging.error(f"Lỗi khi xử lý bill ID {b.id}: {item_error}")
+    
+    session_dest.commit()
+    update_last_loaded_time(session_dest, "fact_promotion_analysis", max_time)
+    logging.info(f"Hoàn thành: etl_fact_promotion_analysis_incremental - Đã xử lý {count} bản ghi mới.")
+

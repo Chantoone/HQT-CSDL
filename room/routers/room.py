@@ -196,6 +196,11 @@ def create_room(
     
     try:
         cinema = db.query(Cinema).filter(Cinema.id == room.cinema_id).first()
+        if not cinema:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Cinema not found!"
+            )
 
         new_room = Room(**room.dict())
 
