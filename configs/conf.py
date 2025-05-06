@@ -16,6 +16,12 @@ class Settings(BaseSettings):
     port: int
     host: str
 
+    email_host: str
+    email_port: int
+    email_username: str
+    email_password: str
+    email_receiver: str
+
     class Config:
         env_file = ".env"
 

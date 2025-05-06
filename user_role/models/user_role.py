@@ -2,6 +2,8 @@ from sqlalchemy import Column, ForeignKey, Integer, text
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.sqltypes import TIMESTAMP
 from configs.database import Base
+from role.models.role import Role
+# from user.models.user import User
 
 
 class UserRole(Base):

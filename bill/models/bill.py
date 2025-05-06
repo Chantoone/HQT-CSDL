@@ -2,6 +2,9 @@ from sqlalchemy import Boolean, Column, Integer, String, text, Date, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.sqltypes import TIMESTAMP
 from configs.database import Base
+from user.models.user import User
+from food.models.food import Food
+from ticket.models.ticket import Ticket
 
 
 class Bill(Base):

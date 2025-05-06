@@ -1,0 +1,365 @@
+2025-05-06 21:20:33,788 - hourly_etl - INFO - Bắt đầu ETL cho dữ liệu 1 giờ trước (2025-05-06 21:20:33.788952)
+2025-05-06 21:20:33,844 - hourly_etl - ERROR - Lỗi khi thực hiện ETL: When initializing mapper Mapper[Bill(bills)], expression 'User' failed to locate a name ('User'). If this is a class name, consider adding this relationship() to the <class 'bill.models.bill.Bill'> class after both dependent classes have been defined.
+2025-05-06 21:20:36,628 - hourly_etl - ERROR - Lỗi khi gửi email: 'NoneType' object has no attribute 'encode'
+2025-05-06 21:20:36,629 - hourly_etl - INFO - Kết thúc ETL (2025-05-06 21:20:36.629030). Thời gian thực hiện: 0:00:02.840078
+2025-05-06 21:23:03,123 - hourly_etl - INFO - Bắt đầu ETL cho dữ liệu 1 giờ trước (2025-05-06 21:23:03.123390)
+2025-05-06 21:23:03,218 - hourly_etl - ERROR - Lỗi khi thực hiện ETL: When initializing mapper Mapper[User(users)], expression 'AuthCredential' failed to locate a name ('AuthCredential'). If this is a class name, consider adding this relationship() to the <class 'user.models.user.User'> class after both dependent classes have been defined.
+2025-05-06 21:23:05,886 - hourly_etl - ERROR - Lỗi khi gửi email: 'NoneType' object has no attribute 'encode'
+2025-05-06 21:23:05,887 - hourly_etl - INFO - Kết thúc ETL (2025-05-06 21:23:05.887900). Thời gian thực hiện: 0:00:02.764510
+2025-05-06 21:23:39,223 - hourly_etl - INFO - Bắt đầu ETL cho dữ liệu 1 giờ trước (2025-05-06 21:23:39.223851)
+2025-05-06 21:23:39,322 - hourly_etl - ERROR - Lỗi khi thực hiện ETL: When initializing mapper Mapper[User(users)], expression 'UserRole' failed to locate a name ('UserRole'). If this is a class name, consider adding this relationship() to the <class 'user.models.user.User'> class after both dependent classes have been defined.
+2025-05-06 21:23:41,943 - hourly_etl - ERROR - Lỗi khi gửi email: 'NoneType' object has no attribute 'encode'
+2025-05-06 21:23:41,944 - hourly_etl - INFO - Kết thúc ETL (2025-05-06 21:23:41.944288). Thời gian thực hiện: 0:00:02.720437
+2025-05-06 21:24:03,075 - hourly_etl - INFO - Bắt đầu ETL cho dữ liệu 1 giờ trước (2025-05-06 21:24:03.075456)
+2025-05-06 21:24:03,177 - hourly_etl - ERROR - Lỗi khi thực hiện ETL: When initializing mapper Mapper[UserRole(user_roles)], expression 'Role' failed to locate a name ('Role'). If this is a class name, consider adding this relationship() to the <class 'user_role.models.user_role.UserRole'> class after both dependent classes have been defined.
+2025-05-06 21:24:05,728 - hourly_etl - ERROR - Lỗi khi gửi email: 'NoneType' object has no attribute 'encode'
+2025-05-06 21:24:05,730 - hourly_etl - INFO - Kết thúc ETL (2025-05-06 21:24:05.730865). Thời gian thực hiện: 0:00:02.655409
+2025-05-06 21:25:31,049 - hourly_etl - INFO - Bắt đầu ETL cho dữ liệu 1 giờ trước (2025-05-06 21:25:31.048392)
+2025-05-06 21:26:04,286 - hourly_etl - INFO - Bắt đầu ETL cho dữ liệu 1 giờ trước (2025-05-06 21:26:04.286918)
+2025-05-06 21:26:04,410 - hourly_etl - ERROR - Lỗi khi thực hiện ETL: When initializing mapper Mapper[User(users)], expression 'UserBill' failed to locate a name ('UserBill'). If this is a class name, consider adding this relationship() to the <class 'user.models.user.User'> class after both dependent classes have been defined.
+2025-05-06 21:26:06,466 - hourly_etl - ERROR - Lỗi khi gửi email: 'NoneType' object has no attribute 'encode'
+2025-05-06 21:26:06,468 - hourly_etl - INFO - Kết thúc ETL (2025-05-06 21:26:06.468535). Thời gian thực hiện: 0:00:02.181617
+2025-05-06 21:26:31,660 - hourly_etl - INFO - Bắt đầu ETL cho dữ liệu 1 giờ trước (2025-05-06 21:26:31.660748)
+2025-05-06 21:26:31,796 - hourly_etl - ERROR - Lỗi khi thực hiện ETL: When initializing mapper Mapper[User(users)], expression 'UserBill' failed to locate a name ('UserBill'). If this is a class name, consider adding this relationship() to the <class 'user.models.user.User'> class after both dependent classes have been defined.
+2025-05-06 21:26:34,019 - hourly_etl - ERROR - Lỗi khi gửi email: 'NoneType' object has no attribute 'encode'
+2025-05-06 21:26:34,020 - hourly_etl - INFO - Kết thúc ETL (2025-05-06 21:26:34.020248). Thời gian thực hiện: 0:00:02.359500
+2025-05-06 21:27:00,273 - hourly_etl - INFO - Bắt đầu ETL cho dữ liệu 1 giờ trước (2025-05-06 21:27:00.273364)
+2025-05-06 21:27:08,923 - hourly_etl - INFO - Bắt đầu ETL cho dữ liệu 1 giờ trước (2025-05-06 21:27:08.923740)
+2025-05-06 21:27:16,279 - hourly_etl - INFO - Bắt đầu ETL cho dữ liệu 1 giờ trước (2025-05-06 21:27:16.279843)
+2025-05-06 21:27:16,401 - hourly_etl - ERROR - Lỗi khi thực hiện ETL: When initializing mapper Mapper[Bill(bills)], expression 'Food' failed to locate a name ('Food'). If this is a class name, consider adding this relationship() to the <class 'bill.models.bill.Bill'> class after both dependent classes have been defined.
+2025-05-06 21:27:19,043 - hourly_etl - ERROR - Lỗi khi gửi email: 'NoneType' object has no attribute 'encode'
+2025-05-06 21:27:19,044 - hourly_etl - INFO - Kết thúc ETL (2025-05-06 21:27:19.044792). Thời gian thực hiện: 0:00:02.764949
+2025-05-06 21:27:50,247 - hourly_etl - INFO - Bắt đầu ETL cho dữ liệu 1 giờ trước (2025-05-06 21:27:50.247998)
+2025-05-06 21:27:50,397 - hourly_etl - ERROR - Lỗi khi thực hiện ETL: When initializing mapper Mapper[ShowtimeSeat(showtime_seats)], expression 'Seat' failed to locate a name ('Seat'). If this is a class name, consider adding this relationship() to the <class 'showtime_seat.models.showtime_seat.ShowtimeSeat'> class after both dependent classes have been defined.
+2025-05-06 21:27:53,118 - hourly_etl - ERROR - Lỗi khi gửi email: 'NoneType' object has no attribute 'encode'
+2025-05-06 21:27:53,119 - hourly_etl - INFO - Kết thúc ETL (2025-05-06 21:27:53.119294). Thời gian thực hiện: 0:00:02.871296
+2025-05-06 21:28:15,983 - hourly_etl - INFO - Bắt đầu ETL cho dữ liệu 1 giờ trước (2025-05-06 21:28:15.983367)
+2025-05-06 21:28:16,159 - hourly_etl - ERROR - Lỗi khi thực hiện ETL: When initializing mapper Mapper[Film(films)], expression 'FilmGenre' failed to locate a name ('FilmGenre'). If this is a class name, consider adding this relationship() to the <class 'film.models.film.Film'> class after both dependent classes have been defined.
+2025-05-06 21:28:18,993 - hourly_etl - ERROR - Lỗi khi gửi email: 'NoneType' object has no attribute 'encode'
+2025-05-06 21:28:18,993 - hourly_etl - INFO - Kết thúc ETL (2025-05-06 21:28:18.993426). Thời gian thực hiện: 0:00:03.010059
+2025-05-06 21:28:52,000 - hourly_etl - INFO - Bắt đầu ETL cho dữ liệu 1 giờ trước (2025-05-06 21:28:52.000498)
+2025-05-06 21:28:52,185 - hourly_etl - ERROR - Lỗi khi thực hiện ETL: (psycopg2.errors.UndefinedTable) relation "etl_metadata" does not exist
+LINE 2: FROM etl_metadata 
+             ^
+
+[SQL: SELECT etl_metadata.table_name AS etl_metadata_table_name, etl_metadata.last_loaded_time AS etl_metadata_last_loaded_time 
+FROM etl_metadata 
+WHERE etl_metadata.table_name = %(table_name_1)s 
+ LIMIT %(param_1)s]
+[parameters: {'table_name_1': 'fact_ticket_analysis', 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-05-06 21:28:52,195 - hourly_etl - ERROR - Lỗi khi tạo báo cáo ETL: (psycopg2.errors.InFailedSqlTransaction) current transaction is aborted, commands ignored until end of transaction block
+
+[SQL: SELECT count(fact_ticket_analysis.ticket_id) AS count_1 
+FROM fact_ticket_analysis 
+WHERE fact_ticket_analysis.date_id >= %(date_id_1)s]
+[parameters: {'date_id_1': datetime.date(2025, 5, 6)}]
+(Background on this error at: https://sqlalche.me/e/20/2j85)
+2025-05-06 21:28:54,016 - hourly_etl - ERROR - Lỗi khi gửi email: 'NoneType' object has no attribute 'encode'
+2025-05-06 21:28:54,017 - hourly_etl - INFO - Kết thúc ETL (2025-05-06 21:28:54.017936). Thời gian thực hiện: 0:00:02.017438
+2025-05-06 21:42:03,723 - hourly_etl - INFO - Bắt đầu ETL cho dữ liệu 1 giờ trước (2025-05-06 21:42:03.723795)
+2025-05-06 21:42:03,878 - hourly_etl - INFO - Bắt đầu ETL cho FactTicketAnalysis
+2025-05-06 21:42:03,985 - root - INFO - Bắt đầu: etl_fact_ticket_analysis_incremental (từ 2025-05-06 20:42:03.808227)
+2025-05-06 21:42:04,648 - root - INFO - Hoàn thành: etl_fact_ticket_analysis_incremental - Đã xử lý 0 bản ghi mới.
+2025-05-06 21:42:04,648 - hourly_etl - INFO - Bắt đầu ETL cho FactFilmRating
+2025-05-06 21:42:04,649 - root - INFO - Bắt đầu: etl_fact_film_rating_incremental (từ 2025-05-06 20:42:03.808227)
+2025-05-06 21:42:04,657 - root - INFO - Hoàn thành: etl_fact_film_rating_incremental - Đã xử lý 0 bản ghi mới. Bỏ qua 0 bản ghi.
+2025-05-06 21:42:04,657 - hourly_etl - INFO - Bắt đầu ETL cho FactRevenue
+2025-05-06 21:42:04,658 - root - INFO - Bắt đầu: etl_fact_revenue_incremental (từ 2025-05-06 20:42:03.808227)
+2025-05-06 21:42:04,885 - root - INFO - Hoàn thành: etl_fact_revenue_incremental - Đã xử lý 0 bản ghi mới.
+2025-05-06 21:42:04,885 - hourly_etl - INFO - Bắt đầu ETL cho FactShowtimeFillRate
+2025-05-06 21:42:04,887 - root - INFO - Bắt đầu: etl_fact_showtime_fillrate_incremental (từ 2025-05-06 20:42:03.808227)
+2025-05-06 21:42:06,552 - root - WARNING - Showtime ID 190802 không có ghế nào (total=0), bỏ qua.
+2025-05-06 21:42:07,021 - root - ERROR - Lỗi khi xử lý showtime ID 190807: can't compare offset-naive and offset-aware datetimes
+2025-05-06 21:42:07,464 - root - ERROR - Lỗi khi xử lý showtime ID 190808: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.ForeignKeyViolation) insert or update on table "fact_showtime_fillrate" violates foreign key constraint "fact_showtime_fillrate_showtime_id_fkey"
+DETAIL:  Key (showtime_id)=(190807) is not present in table "dim_showtime".
+
+[SQL: INSERT INTO fact_showtime_fillrate (date_id, film_id, showtime_id, total_seats, booked_seats, fill_rate) VALUES (%(date_id)s, %(film_id)s, %(showtime_id)s, %(total_seats)s, %(booked_seats)s, %(fill_rate)s) RETURNING fact_showtime_fillrate.id, fact_showtime_fillrate.etl_loaded_at]
+[parameters: {'date_id': datetime.date(2025, 6, 30), 'film_id': 4, 'showtime_id': 190807, 'total_seats': 60, 'booked_seats': 0, 'fill_rate': 0.0}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-06 21:42:07,465 - hourly_etl - ERROR - Lỗi khi thực hiện ETL: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.ForeignKeyViolation) insert or update on table "fact_showtime_fillrate" violates foreign key constraint "fact_showtime_fillrate_showtime_id_fkey"
+DETAIL:  Key (showtime_id)=(190807) is not present in table "dim_showtime".
+
+[SQL: INSERT INTO fact_showtime_fillrate (date_id, film_id, showtime_id, total_seats, booked_seats, fill_rate) VALUES (%(date_id)s, %(film_id)s, %(showtime_id)s, %(total_seats)s, %(booked_seats)s, %(fill_rate)s) RETURNING fact_showtime_fillrate.id, fact_showtime_fillrate.etl_loaded_at]
+[parameters: {'date_id': datetime.date(2025, 6, 30), 'film_id': 4, 'showtime_id': 190807, 'total_seats': 60, 'booked_seats': 0, 'fill_rate': 0.0}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2025-05-06 21:42:07,466 - hourly_etl - ERROR - Lỗi khi tạo báo cáo ETL: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.ForeignKeyViolation) insert or update on table "fact_showtime_fillrate" violates foreign key constraint "fact_showtime_fillrate_showtime_id_fkey"
+DETAIL:  Key (showtime_id)=(190807) is not present in table "dim_showtime".
+
+[SQL: INSERT INTO fact_showtime_fillrate (date_id, film_id, showtime_id, total_seats, booked_seats, fill_rate) VALUES (%(date_id)s, %(film_id)s, %(showtime_id)s, %(total_seats)s, %(booked_seats)s, %(fill_rate)s) RETURNING fact_showtime_fillrate.id, fact_showtime_fillrate.etl_loaded_at]
+[parameters: {'date_id': datetime.date(2025, 6, 30), 'film_id': 4, 'showtime_id': 190807, 'total_seats': 60, 'booked_seats': 0, 'fill_rate': 0.0}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2025-05-06 21:42:08,628 - hourly_etl - ERROR - Lỗi khi gửi email: 'NoneType' object has no attribute 'encode'
+2025-05-06 21:42:08,628 - hourly_etl - INFO - Kết thúc ETL (2025-05-06 21:42:08.628952). Thời gian thực hiện: 0:00:04.905157
+2025-05-06 22:18:44,044 - hourly_etl - INFO - Bắt đầu ETL cho dữ liệu 1 giờ trước (2025-05-06 22:18:44.044883)
+2025-05-06 22:18:44,182 - hourly_etl - INFO - Bắt đầu ETL cho FactTicketAnalysis
+2025-05-06 22:18:44,184 - root - INFO - Bắt đầu: etl_fact_ticket_analysis_incremental (từ 2025-05-06 21:18:44.126676)
+2025-05-06 22:18:44,687 - root - INFO - Hoàn thành: etl_fact_ticket_analysis_incremental - Đã xử lý 0 bản ghi mới.
+2025-05-06 22:18:44,688 - hourly_etl - INFO - Bắt đầu ETL cho FactFilmRating
+2025-05-06 22:18:44,689 - root - INFO - Bắt đầu: etl_fact_film_rating_incremental (từ 2025-05-06 21:18:44.126676)
+2025-05-06 22:18:44,695 - root - INFO - Hoàn thành: etl_fact_film_rating_incremental - Đã xử lý 0 bản ghi mới. Bỏ qua 0 bản ghi.
+2025-05-06 22:18:44,695 - hourly_etl - INFO - Bắt đầu ETL cho FactRevenue
+2025-05-06 22:18:44,697 - root - INFO - Bắt đầu: etl_fact_revenue_incremental (từ 2025-05-06 21:18:44.126676)
+2025-05-06 22:18:44,902 - root - INFO - Hoàn thành: etl_fact_revenue_incremental - Đã xử lý 0 bản ghi mới.
+2025-05-06 22:18:44,903 - hourly_etl - INFO - Bắt đầu ETL cho FactShowtimeFillRate
+2025-05-06 22:18:44,904 - root - INFO - Bắt đầu: etl_fact_showtime_fillrate_incremental (từ 2025-05-06 21:18:44.126676)
+2025-05-06 22:18:46,324 - root - WARNING - Showtime ID 190802 không có ghế nào (total=0), bỏ qua.
+2025-05-06 22:18:46,738 - root - ERROR - Lỗi khi xử lý showtime ID 190807: can't compare offset-naive and offset-aware datetimes
+2025-05-06 22:18:47,142 - root - ERROR - Lỗi khi xử lý showtime ID 190808: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.ForeignKeyViolation) insert or update on table "fact_showtime_fillrate" violates foreign key constraint "fact_showtime_fillrate_showtime_id_fkey"
+DETAIL:  Key (showtime_id)=(190807) is not present in table "dim_showtime".
+
+[SQL: INSERT INTO fact_showtime_fillrate (date_id, film_id, showtime_id, total_seats, booked_seats, fill_rate) VALUES (%(date_id)s, %(film_id)s, %(showtime_id)s, %(total_seats)s, %(booked_seats)s, %(fill_rate)s) RETURNING fact_showtime_fillrate.id, fact_showtime_fillrate.etl_loaded_at]
+[parameters: {'date_id': datetime.date(2025, 6, 30), 'film_id': 4, 'showtime_id': 190807, 'total_seats': 60, 'booked_seats': 0, 'fill_rate': 0.0}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-06 22:18:47,143 - hourly_etl - ERROR - Lỗi khi thực hiện ETL: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.ForeignKeyViolation) insert or update on table "fact_showtime_fillrate" violates foreign key constraint "fact_showtime_fillrate_showtime_id_fkey"
+DETAIL:  Key (showtime_id)=(190807) is not present in table "dim_showtime".
+
+[SQL: INSERT INTO fact_showtime_fillrate (date_id, film_id, showtime_id, total_seats, booked_seats, fill_rate) VALUES (%(date_id)s, %(film_id)s, %(showtime_id)s, %(total_seats)s, %(booked_seats)s, %(fill_rate)s) RETURNING fact_showtime_fillrate.id, fact_showtime_fillrate.etl_loaded_at]
+[parameters: {'date_id': datetime.date(2025, 6, 30), 'film_id': 4, 'showtime_id': 190807, 'total_seats': 60, 'booked_seats': 0, 'fill_rate': 0.0}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2025-05-06 22:18:47,143 - hourly_etl - ERROR - Lỗi khi tạo báo cáo ETL: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.ForeignKeyViolation) insert or update on table "fact_showtime_fillrate" violates foreign key constraint "fact_showtime_fillrate_showtime_id_fkey"
+DETAIL:  Key (showtime_id)=(190807) is not present in table "dim_showtime".
+
+[SQL: INSERT INTO fact_showtime_fillrate (date_id, film_id, showtime_id, total_seats, booked_seats, fill_rate) VALUES (%(date_id)s, %(film_id)s, %(showtime_id)s, %(total_seats)s, %(booked_seats)s, %(fill_rate)s) RETURNING fact_showtime_fillrate.id, fact_showtime_fillrate.etl_loaded_at]
+[parameters: {'date_id': datetime.date(2025, 6, 30), 'film_id': 4, 'showtime_id': 190807, 'total_seats': 60, 'booked_seats': 0, 'fill_rate': 0.0}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2025-05-06 22:18:48,989 - hourly_etl - ERROR - Lỗi khi gửi email: 'NoneType' object has no attribute 'encode'
+2025-05-06 22:18:48,990 - hourly_etl - INFO - Kết thúc ETL (2025-05-06 22:18:48.990673). Thời gian thực hiện: 0:00:04.945790
+2025-05-06 22:37:31,956 - hourly_etl - INFO - Bắt đầu ETL cho dữ liệu 1 giờ trước (2025-05-06 22:37:31.956850)
+2025-05-06 22:37:32,093 - hourly_etl - INFO - Bắt đầu ETL cho FactTicketAnalysis
+2025-05-06 22:37:32,094 - root - INFO - Bắt đầu: etl_fact_ticket_analysis_incremental (từ 2025-05-06 21:37:32.038158)
+2025-05-06 22:37:32,782 - root - INFO - Hoàn thành: etl_fact_ticket_analysis_incremental - Đã xử lý 0 bản ghi mới.
+2025-05-06 22:37:32,783 - hourly_etl - INFO - Bắt đầu ETL cho FactFilmRating
+2025-05-06 22:37:32,784 - root - INFO - Bắt đầu: etl_fact_film_rating_incremental (từ 2025-05-06 21:37:32.038158)
+2025-05-06 22:37:32,790 - root - INFO - Hoàn thành: etl_fact_film_rating_incremental - Đã xử lý 0 bản ghi mới. Bỏ qua 0 bản ghi.
+2025-05-06 22:37:32,791 - hourly_etl - INFO - Bắt đầu ETL cho FactRevenue
+2025-05-06 22:37:32,792 - root - INFO - Bắt đầu: etl_fact_revenue_incremental (từ 2025-05-06 21:37:32.038158)
+2025-05-06 22:37:33,017 - root - INFO - Hoàn thành: etl_fact_revenue_incremental - Đã xử lý 0 bản ghi mới.
+2025-05-06 22:37:33,017 - hourly_etl - INFO - Bắt đầu ETL cho FactShowtimeFillRate
+2025-05-06 22:37:33,019 - root - INFO - Bắt đầu: etl_fact_showtime_fillrate_incremental (từ 2025-05-06 21:37:32.038158)
+2025-05-06 22:37:34,990 - root - WARNING - Showtime ID 190802 không có ghế nào (total=0), bỏ qua.
+2025-05-06 22:37:35,454 - root - ERROR - Lỗi khi xử lý showtime ID 190807: can't compare offset-naive and offset-aware datetimes
+2025-05-06 22:37:35,886 - root - ERROR - Lỗi khi xử lý showtime ID 190808: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.ForeignKeyViolation) insert or update on table "fact_showtime_fillrate" violates foreign key constraint "fact_showtime_fillrate_showtime_id_fkey"
+DETAIL:  Key (showtime_id)=(190807) is not present in table "dim_showtime".
+
+[SQL: INSERT INTO fact_showtime_fillrate (date_id, film_id, showtime_id, total_seats, booked_seats, fill_rate) VALUES (%(date_id)s, %(film_id)s, %(showtime_id)s, %(total_seats)s, %(booked_seats)s, %(fill_rate)s) RETURNING fact_showtime_fillrate.id, fact_showtime_fillrate.etl_loaded_at]
+[parameters: {'date_id': datetime.date(2025, 6, 30), 'film_id': 4, 'showtime_id': 190807, 'total_seats': 60, 'booked_seats': 0, 'fill_rate': 0.0}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-06 22:37:35,887 - hourly_etl - ERROR - Lỗi khi thực hiện ETL: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.ForeignKeyViolation) insert or update on table "fact_showtime_fillrate" violates foreign key constraint "fact_showtime_fillrate_showtime_id_fkey"
+DETAIL:  Key (showtime_id)=(190807) is not present in table "dim_showtime".
+
+[SQL: INSERT INTO fact_showtime_fillrate (date_id, film_id, showtime_id, total_seats, booked_seats, fill_rate) VALUES (%(date_id)s, %(film_id)s, %(showtime_id)s, %(total_seats)s, %(booked_seats)s, %(fill_rate)s) RETURNING fact_showtime_fillrate.id, fact_showtime_fillrate.etl_loaded_at]
+[parameters: {'date_id': datetime.date(2025, 6, 30), 'film_id': 4, 'showtime_id': 190807, 'total_seats': 60, 'booked_seats': 0, 'fill_rate': 0.0}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2025-05-06 22:37:35,888 - hourly_etl - ERROR - Lỗi khi tạo báo cáo ETL: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.ForeignKeyViolation) insert or update on table "fact_showtime_fillrate" violates foreign key constraint "fact_showtime_fillrate_showtime_id_fkey"
+DETAIL:  Key (showtime_id)=(190807) is not present in table "dim_showtime".
+
+[SQL: INSERT INTO fact_showtime_fillrate (date_id, film_id, showtime_id, total_seats, booked_seats, fill_rate) VALUES (%(date_id)s, %(film_id)s, %(showtime_id)s, %(total_seats)s, %(booked_seats)s, %(fill_rate)s) RETURNING fact_showtime_fillrate.id, fact_showtime_fillrate.etl_loaded_at]
+[parameters: {'date_id': datetime.date(2025, 6, 30), 'film_id': 4, 'showtime_id': 190807, 'total_seats': 60, 'booked_seats': 0, 'fill_rate': 0.0}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2025-05-06 22:37:37,905 - hourly_etl - ERROR - Lỗi khi gửi email: 'NoneType' object has no attribute 'encode'
+2025-05-06 22:37:37,905 - hourly_etl - INFO - Kết thúc ETL (2025-05-06 22:37:37.905949). Thời gian thực hiện: 0:00:05.949099
+2025-05-06 22:40:39,157 - hourly_etl - INFO - Bắt đầu ETL cho dữ liệu 1 giờ trước (2025-05-06 22:40:39.156396)
+2025-05-06 22:40:39,299 - hourly_etl - INFO - Bắt đầu ETL cho FactTicketAnalysis
+2025-05-06 22:40:39,300 - root - INFO - Bắt đầu: etl_fact_ticket_analysis_incremental (từ 2025-05-06 21:40:39.241716+00:00)
+2025-05-06 22:40:39,751 - root - INFO - Hoàn thành: etl_fact_ticket_analysis_incremental - Đã xử lý 0 bản ghi mới.
+2025-05-06 22:40:39,752 - hourly_etl - INFO - Bắt đầu ETL cho FactFilmRating
+2025-05-06 22:40:39,753 - root - INFO - Bắt đầu: etl_fact_film_rating_incremental (từ 2025-05-06 21:40:39.241716+00:00)
+2025-05-06 22:40:39,761 - root - INFO - Hoàn thành: etl_fact_film_rating_incremental - Đã xử lý 0 bản ghi mới. Bỏ qua 0 bản ghi.
+2025-05-06 22:40:39,762 - hourly_etl - INFO - Bắt đầu ETL cho FactRevenue
+2025-05-06 22:40:39,763 - root - INFO - Bắt đầu: etl_fact_revenue_incremental (từ 2025-05-06 21:40:39.241716+00:00)
+2025-05-06 22:40:39,937 - root - INFO - Hoàn thành: etl_fact_revenue_incremental - Đã xử lý 0 bản ghi mới.
+2025-05-06 22:40:39,937 - hourly_etl - INFO - Bắt đầu ETL cho FactShowtimeFillRate
+2025-05-06 22:40:39,939 - root - INFO - Bắt đầu: etl_fact_showtime_fillrate_incremental (từ 2025-05-06 21:40:39.241716+00:00)
+2025-05-06 22:40:41,795 - root - WARNING - Showtime ID 190802 không có ghế nào (total=0), bỏ qua.
+2025-05-06 22:40:42,682 - root - ERROR - Lỗi khi xử lý showtime ID 190808: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.ForeignKeyViolation) insert or update on table "fact_showtime_fillrate" violates foreign key constraint "fact_showtime_fillrate_showtime_id_fkey"
+DETAIL:  Key (showtime_id)=(190807) is not present in table "dim_showtime".
+
+[SQL: INSERT INTO fact_showtime_fillrate (date_id, film_id, showtime_id, total_seats, booked_seats, fill_rate) VALUES (%(date_id)s, %(film_id)s, %(showtime_id)s, %(total_seats)s, %(booked_seats)s, %(fill_rate)s) RETURNING fact_showtime_fillrate.id, fact_showtime_fillrate.etl_loaded_at]
+[parameters: {'date_id': datetime.date(2025, 6, 30), 'film_id': 4, 'showtime_id': 190807, 'total_seats': 60, 'booked_seats': 0, 'fill_rate': 0.0}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2025-05-06 22:40:42,684 - hourly_etl - ERROR - Lỗi khi thực hiện ETL: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.ForeignKeyViolation) insert or update on table "fact_showtime_fillrate" violates foreign key constraint "fact_showtime_fillrate_showtime_id_fkey"
+DETAIL:  Key (showtime_id)=(190807) is not present in table "dim_showtime".
+
+[SQL: INSERT INTO fact_showtime_fillrate (date_id, film_id, showtime_id, total_seats, booked_seats, fill_rate) VALUES (%(date_id)s, %(film_id)s, %(showtime_id)s, %(total_seats)s, %(booked_seats)s, %(fill_rate)s) RETURNING fact_showtime_fillrate.id, fact_showtime_fillrate.etl_loaded_at]
+[parameters: {'date_id': datetime.date(2025, 6, 30), 'film_id': 4, 'showtime_id': 190807, 'total_seats': 60, 'booked_seats': 0, 'fill_rate': 0.0}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2025-05-06 22:40:42,684 - hourly_etl - ERROR - Lỗi khi tạo báo cáo ETL: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (raised as a result of Query-invoked autoflush; consider using a session.no_autoflush block if this flush is occurring prematurely)
+(psycopg2.errors.ForeignKeyViolation) insert or update on table "fact_showtime_fillrate" violates foreign key constraint "fact_showtime_fillrate_showtime_id_fkey"
+DETAIL:  Key (showtime_id)=(190807) is not present in table "dim_showtime".
+
+[SQL: INSERT INTO fact_showtime_fillrate (date_id, film_id, showtime_id, total_seats, booked_seats, fill_rate) VALUES (%(date_id)s, %(film_id)s, %(showtime_id)s, %(total_seats)s, %(booked_seats)s, %(fill_rate)s) RETURNING fact_showtime_fillrate.id, fact_showtime_fillrate.etl_loaded_at]
+[parameters: {'date_id': datetime.date(2025, 6, 30), 'film_id': 4, 'showtime_id': 190807, 'total_seats': 60, 'booked_seats': 0, 'fill_rate': 0.0}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2025-05-06 22:40:44,708 - hourly_etl - ERROR - Lỗi khi gửi email: 'NoneType' object has no attribute 'encode'
+2025-05-06 22:40:44,709 - hourly_etl - INFO - Kết thúc ETL (2025-05-06 22:40:44.709676). Thời gian thực hiện: 0:00:05.553280
+2025-05-06 23:09:32,722 - hourly_etl - INFO - Bắt đầu ETL cho dữ liệu 1 giờ trước (2025-05-06 23:09:32.722816)
+2025-05-06 23:09:32,862 - hourly_etl - INFO - Bắt đầu ETL cho FactTicketAnalysis
+2025-05-06 23:09:32,864 - root - INFO - Bắt đầu: etl_fact_ticket_analysis_incremental (từ 2025-05-06 22:09:32.794766+00:00)
+2025-05-06 23:09:33,446 - root - INFO - Hoàn thành: etl_fact_ticket_analysis_incremental - Đã xử lý 0 bản ghi mới.
+2025-05-06 23:09:33,447 - hourly_etl - INFO - Bắt đầu ETL cho FactFilmRating
+2025-05-06 23:09:33,448 - root - INFO - Bắt đầu: etl_fact_film_rating_incremental (từ 2025-05-06 22:09:32.794766+00:00)
+2025-05-06 23:09:33,455 - root - INFO - Hoàn thành: etl_fact_film_rating_incremental - Đã xử lý 0 bản ghi mới. Bỏ qua 0 bản ghi.
+2025-05-06 23:09:33,455 - hourly_etl - INFO - Bắt đầu ETL cho FactRevenue
+2025-05-06 23:09:33,457 - root - INFO - Bắt đầu: etl_fact_revenue_incremental (từ 2025-05-06 22:09:32.794766+00:00)
+2025-05-06 23:09:33,675 - root - INFO - Hoàn thành: etl_fact_revenue_incremental - Đã xử lý 0 bản ghi mới.
+2025-05-06 23:09:33,675 - hourly_etl - INFO - Bắt đầu ETL cho FactShowtimeFillRate
+2025-05-06 23:09:33,677 - root - INFO - Bắt đầu: etl_fact_showtime_fillrate_incremental (từ 2025-05-06 22:09:32.794766+00:00)
+2025-05-06 23:09:35,661 - root - WARNING - Showtime ID 190802 không có ghế nào (total=0), bỏ qua.
+2025-05-06 23:09:36,209 - root - WARNING - Showtime ID 190807 không tồn tại trong dim_showtime, bỏ qua.
+2025-05-06 23:09:36,663 - root - WARNING - Showtime ID 190808 không tồn tại trong dim_showtime, bỏ qua.
+2025-05-06 23:09:36,666 - root - INFO - Hoàn thành: etl_fact_showtime_fillrate_incremental - Đã xử lý 0 bản ghi mới.
+2025-05-06 23:09:36,667 - hourly_etl - INFO - Bắt đầu ETL cho FactPromotionAnalysis
+2025-05-06 23:09:36,668 - root - INFO - Bắt đầu: etl_fact_promotion_analysis_incremental (từ 2025-05-06 22:09:32.794766+00:00)
+2025-05-06 23:09:36,668 - root - INFO - Truy vấn bill_id sử dụng khuyến mãi từ lần ETL trước...
+2025-05-06 23:09:36,800 - root - INFO - Đã tìm thấy 0 bill_id mới đã dùng khuyến mãi.
+2025-05-06 23:09:36,966 - root - INFO - Hoàn thành: etl_fact_promotion_analysis_incremental - Đã xử lý 0 bản ghi mới.
+2025-05-06 23:09:39,079 - hourly_etl - ERROR - Lỗi khi gửi email: 'NoneType' object has no attribute 'encode'
+2025-05-06 23:09:39,080 - hourly_etl - INFO - Kết thúc ETL (2025-05-06 23:09:39.080544). Thời gian thực hiện: 0:00:06.357728
+2025-05-06 23:17:53,837 - hourly_etl - INFO - Bắt đầu ETL cho dữ liệu 1 giờ trước (2025-05-06 23:17:53.837654)
+2025-05-06 23:17:54,025 - hourly_etl - INFO - Bắt đầu ETL cho FactTicketAnalysis
+2025-05-06 23:17:54,034 - root - INFO - Bắt đầu: etl_fact_ticket_analysis_incremental (từ 2025-05-06 22:17:53.935387+00:00)
+2025-05-06 23:17:54,676 - root - INFO - Hoàn thành: etl_fact_ticket_analysis_incremental - Đã xử lý 0 bản ghi mới.
+2025-05-06 23:17:54,677 - hourly_etl - INFO - Bắt đầu ETL cho FactFilmRating
+2025-05-06 23:17:54,678 - root - INFO - Bắt đầu: etl_fact_film_rating_incremental (từ 2025-05-06 22:17:53.935387+00:00)
+2025-05-06 23:17:54,687 - root - INFO - Hoàn thành: etl_fact_film_rating_incremental - Đã xử lý 0 bản ghi mới. Bỏ qua 0 bản ghi.
+2025-05-06 23:17:54,687 - hourly_etl - INFO - Bắt đầu ETL cho FactRevenue
+2025-05-06 23:17:54,688 - root - INFO - Bắt đầu: etl_fact_revenue_incremental (từ 2025-05-06 22:17:53.935387+00:00)
+2025-05-06 23:17:54,869 - root - INFO - Hoàn thành: etl_fact_revenue_incremental - Đã xử lý 0 bản ghi mới.
+2025-05-06 23:17:54,869 - hourly_etl - INFO - Bắt đầu ETL cho FactShowtimeFillRate
+2025-05-06 23:17:54,872 - root - INFO - Bắt đầu: etl_fact_showtime_fillrate_incremental (từ 2025-05-06 22:17:53.935387+00:00)
+2025-05-06 23:17:56,568 - root - WARNING - Showtime ID 190802 không có ghế nào (total=0), bỏ qua.
+2025-05-06 23:17:57,047 - root - WARNING - Showtime ID 190807 không tồn tại trong dim_showtime, bỏ qua.
+2025-05-06 23:17:57,431 - root - WARNING - Showtime ID 190808 không tồn tại trong dim_showtime, bỏ qua.
+2025-05-06 23:17:57,431 - root - INFO - Hoàn thành: etl_fact_showtime_fillrate_incremental - Đã xử lý 0 bản ghi mới.
+2025-05-06 23:17:57,431 - hourly_etl - INFO - Bắt đầu ETL cho FactPromotionAnalysis
+2025-05-06 23:17:57,431 - root - INFO - Bắt đầu: etl_fact_promotion_analysis_incremental (từ 2025-05-06 22:17:53.935387+00:00)
+2025-05-06 23:17:57,431 - root - INFO - Truy vấn bill_id sử dụng khuyến mãi từ lần ETL trước...
+2025-05-06 23:17:57,582 - root - INFO - Đã tìm thấy 0 bill_id mới đã dùng khuyến mãi.
+2025-05-06 23:17:57,740 - root - INFO - Hoàn thành: etl_fact_promotion_analysis_incremental - Đã xử lý 0 bản ghi mới.
+2025-05-06 23:18:01,879 - hourly_etl - INFO - Đã gửi email báo cáo ETL thành công đến danhhieu123ns@gmail.com
+2025-05-06 23:18:01,879 - hourly_etl - INFO - Kết thúc ETL (2025-05-06 23:18:01.879641). Thời gian thực hiện: 0:00:08.041987
+2025-05-06 23:20:18,449 - hourly_etl - INFO - Bắt đầu ETL cho dữ liệu 1 giờ trước (2025-05-06 23:20:18.449628)
+2025-05-06 23:20:18,565 - hourly_etl - INFO - Bắt đầu ETL cho FactTicketAnalysis
+2025-05-06 23:20:18,565 - root - INFO - Bắt đầu: etl_fact_ticket_analysis_incremental (từ 2025-05-06 22:20:18.525037+00:00)
+2025-05-06 23:20:19,042 - root - INFO - Hoàn thành: etl_fact_ticket_analysis_incremental - Đã xử lý 0 bản ghi mới.
+2025-05-06 23:20:19,042 - hourly_etl - INFO - Bắt đầu ETL cho FactFilmRating
+2025-05-06 23:20:19,043 - root - INFO - Bắt đầu: etl_fact_film_rating_incremental (từ 2025-05-06 22:20:18.525037+00:00)
+2025-05-06 23:20:19,048 - root - INFO - Hoàn thành: etl_fact_film_rating_incremental - Đã xử lý 0 bản ghi mới. Bỏ qua 0 bản ghi.
+2025-05-06 23:20:19,048 - hourly_etl - INFO - Bắt đầu ETL cho FactRevenue
+2025-05-06 23:20:19,049 - root - INFO - Bắt đầu: etl_fact_revenue_incremental (từ 2025-05-06 22:20:18.525037+00:00)
+2025-05-06 23:20:19,199 - root - INFO - Hoàn thành: etl_fact_revenue_incremental - Đã xử lý 0 bản ghi mới.
+2025-05-06 23:20:19,199 - hourly_etl - INFO - Bắt đầu ETL cho FactShowtimeFillRate
+2025-05-06 23:20:19,199 - root - INFO - Bắt đầu: etl_fact_showtime_fillrate_incremental (từ 2025-05-06 22:20:18.525037+00:00)
+2025-05-06 23:20:20,682 - root - WARNING - Showtime ID 190802 không có ghế nào (total=0), bỏ qua.
+2025-05-06 23:20:21,087 - root - WARNING - Showtime ID 190807 không tồn tại trong dim_showtime, bỏ qua.
+2025-05-06 23:20:21,493 - root - WARNING - Showtime ID 190808 không tồn tại trong dim_showtime, bỏ qua.
+2025-05-06 23:20:21,493 - root - INFO - Hoàn thành: etl_fact_showtime_fillrate_incremental - Đã xử lý 0 bản ghi mới.
+2025-05-06 23:20:21,493 - hourly_etl - INFO - Bắt đầu ETL cho FactPromotionAnalysis
+2025-05-06 23:20:21,493 - root - INFO - Bắt đầu: etl_fact_promotion_analysis_incremental (từ 2025-05-06 22:20:18.525037+00:00)
+2025-05-06 23:20:21,493 - root - INFO - Truy vấn bill_id sử dụng khuyến mãi từ lần ETL trước...
+2025-05-06 23:20:21,617 - root - INFO - Đã tìm thấy 0 bill_id mới đã dùng khuyến mãi.
+2025-05-06 23:20:21,769 - root - INFO - Hoàn thành: etl_fact_promotion_analysis_incremental - Đã xử lý 0 bản ghi mới.
+2025-05-06 23:21:41,308 - hourly_etl - INFO - Bắt đầu ETL cho dữ liệu 1 giờ trước (2025-05-06 23:21:41.308534)
+2025-05-06 23:21:41,424 - hourly_etl - INFO - Bắt đầu ETL cho FactTicketAnalysis
+2025-05-06 23:21:41,424 - root - INFO - Bắt đầu: etl_fact_ticket_analysis_incremental (từ 2025-05-06 22:21:41.381777+00:00)
+2025-05-06 23:21:41,850 - root - INFO - Hoàn thành: etl_fact_ticket_analysis_incremental - Đã xử lý 0 bản ghi mới.
+2025-05-06 23:21:41,850 - hourly_etl - INFO - Bắt đầu ETL cho FactFilmRating
+2025-05-06 23:21:41,850 - root - INFO - Bắt đầu: etl_fact_film_rating_incremental (từ 2025-05-06 22:21:41.381777+00:00)
+2025-05-06 23:21:41,862 - root - INFO - Hoàn thành: etl_fact_film_rating_incremental - Đã xử lý 0 bản ghi mới. Bỏ qua 0 bản ghi.
+2025-05-06 23:21:41,862 - hourly_etl - INFO - Bắt đầu ETL cho FactRevenue
+2025-05-06 23:21:41,864 - root - INFO - Bắt đầu: etl_fact_revenue_incremental (từ 2025-05-06 22:21:41.381777+00:00)
+2025-05-06 23:21:42,005 - root - INFO - Hoàn thành: etl_fact_revenue_incremental - Đã xử lý 0 bản ghi mới.
+2025-05-06 23:21:42,005 - hourly_etl - INFO - Bắt đầu ETL cho FactShowtimeFillRate
+2025-05-06 23:21:42,021 - root - INFO - Bắt đầu: etl_fact_showtime_fillrate_incremental (từ 2025-05-06 22:21:41.381777+00:00)
+2025-05-06 23:21:43,370 - root - WARNING - Showtime ID 190802 không có ghế nào (total=0), bỏ qua.
+2025-05-06 23:21:43,803 - root - WARNING - Showtime ID 190807 không tồn tại trong dim_showtime, bỏ qua.
+2025-05-06 23:21:44,257 - root - WARNING - Showtime ID 190808 không tồn tại trong dim_showtime, bỏ qua.
+2025-05-06 23:21:44,257 - root - INFO - Hoàn thành: etl_fact_showtime_fillrate_incremental - Đã xử lý 0 bản ghi mới.
+2025-05-06 23:21:44,257 - hourly_etl - INFO - Bắt đầu ETL cho FactPromotionAnalysis
+2025-05-06 23:21:44,257 - root - INFO - Bắt đầu: etl_fact_promotion_analysis_incremental (từ 2025-05-06 22:21:41.381777+00:00)
+2025-05-06 23:21:44,257 - root - INFO - Truy vấn bill_id sử dụng khuyến mãi từ lần ETL trước...
+2025-05-06 23:21:44,405 - root - INFO - Đã tìm thấy 0 bill_id mới đã dùng khuyến mãi.
+2025-05-06 23:21:44,556 - root - INFO - Hoàn thành: etl_fact_promotion_analysis_incremental - Đã xử lý 0 bản ghi mới.
+2025-05-06 23:21:47,989 - hourly_etl - INFO - Đã gửi email báo cáo ETL thành công đến danhhieu123ns@gmail.com
+2025-05-06 23:21:47,989 - hourly_etl - INFO - Kết thúc ETL (2025-05-06 23:21:47.989593). Thời gian thực hiện: 0:00:06.681059
+2025-05-06 23:22:14,640 - hourly_etl - INFO - Bắt đầu ETL cho dữ liệu 1 giờ trước (2025-05-06 23:22:14.640153)
+2025-05-06 23:22:14,746 - hourly_etl - INFO - Bắt đầu ETL cho FactTicketAnalysis
+2025-05-06 23:22:14,746 - root - INFO - Bắt đầu: etl_fact_ticket_analysis_incremental (từ 2025-05-06 22:22:14.700405+00:00)
+2025-05-06 23:22:15,148 - root - INFO - Hoàn thành: etl_fact_ticket_analysis_incremental - Đã xử lý 0 bản ghi mới.
+2025-05-06 23:22:15,148 - hourly_etl - INFO - Bắt đầu ETL cho FactFilmRating
+2025-05-06 23:22:15,148 - root - INFO - Bắt đầu: etl_fact_film_rating_incremental (từ 2025-05-06 22:22:14.700405+00:00)
+2025-05-06 23:22:15,148 - root - INFO - Hoàn thành: etl_fact_film_rating_incremental - Đã xử lý 0 bản ghi mới. Bỏ qua 0 bản ghi.
+2025-05-06 23:22:15,148 - hourly_etl - INFO - Bắt đầu ETL cho FactRevenue
+2025-05-06 23:22:15,159 - root - INFO - Bắt đầu: etl_fact_revenue_incremental (từ 2025-05-06 22:22:14.700405+00:00)
+2025-05-06 23:22:15,293 - root - INFO - Hoàn thành: etl_fact_revenue_incremental - Đã xử lý 0 bản ghi mới.
+2025-05-06 23:22:15,293 - hourly_etl - INFO - Bắt đầu ETL cho FactShowtimeFillRate
+2025-05-06 23:22:15,308 - root - INFO - Bắt đầu: etl_fact_showtime_fillrate_incremental (từ 2025-05-06 22:22:14.700405+00:00)
+2025-05-06 23:22:16,643 - root - WARNING - Showtime ID 190802 không có ghế nào (total=0), bỏ qua.
+2025-05-06 23:22:17,049 - root - WARNING - Showtime ID 190807 không tồn tại trong dim_showtime, bỏ qua.
+2025-05-06 23:22:17,461 - root - WARNING - Showtime ID 190808 không tồn tại trong dim_showtime, bỏ qua.
+2025-05-06 23:22:17,461 - root - INFO - Hoàn thành: etl_fact_showtime_fillrate_incremental - Đã xử lý 0 bản ghi mới.
+2025-05-06 23:22:17,461 - hourly_etl - INFO - Bắt đầu ETL cho FactPromotionAnalysis
+2025-05-06 23:22:17,461 - root - INFO - Bắt đầu: etl_fact_promotion_analysis_incremental (từ 2025-05-06 22:22:14.700405+00:00)
+2025-05-06 23:22:17,461 - root - INFO - Truy vấn bill_id sử dụng khuyến mãi từ lần ETL trước...
+2025-05-06 23:22:17,598 - root - INFO - Đã tìm thấy 0 bill_id mới đã dùng khuyến mãi.
+2025-05-06 23:22:17,747 - root - INFO - Hoàn thành: etl_fact_promotion_analysis_incremental - Đã xử lý 0 bản ghi mới.
+2025-05-06 23:22:20,879 - hourly_etl - INFO - Đã gửi email báo cáo ETL thành công đến danhhieu123ns@gmail.com
+2025-05-06 23:22:20,880 - hourly_etl - INFO - Kết thúc ETL (2025-05-06 23:22:20.880631). Thời gian thực hiện: 0:00:06.240478
+2025-05-06 23:22:44,353 - hourly_etl - INFO - Bắt đầu ETL cho dữ liệu 1 giờ trước (2025-05-06 23:22:44.353881)
+2025-05-06 23:22:44,453 - hourly_etl - INFO - Bắt đầu ETL cho FactTicketAnalysis
+2025-05-06 23:22:44,468 - root - INFO - Bắt đầu: etl_fact_ticket_analysis_incremental (từ 2025-05-06 22:22:44.414382+00:00)
+2025-05-06 23:22:44,894 - root - INFO - Hoàn thành: etl_fact_ticket_analysis_incremental - Đã xử lý 0 bản ghi mới.
+2025-05-06 23:22:44,894 - hourly_etl - INFO - Bắt đầu ETL cho FactFilmRating
+2025-05-06 23:22:44,896 - root - INFO - Bắt đầu: etl_fact_film_rating_incremental (từ 2025-05-06 22:22:44.414382+00:00)
+2025-05-06 23:22:44,902 - root - INFO - Hoàn thành: etl_fact_film_rating_incremental - Đã xử lý 0 bản ghi mới. Bỏ qua 0 bản ghi.
+2025-05-06 23:22:44,903 - hourly_etl - INFO - Bắt đầu ETL cho FactRevenue
+2025-05-06 23:22:44,904 - root - INFO - Bắt đầu: etl_fact_revenue_incremental (từ 2025-05-06 22:22:44.414382+00:00)
+2025-05-06 23:22:45,052 - root - INFO - Hoàn thành: etl_fact_revenue_incremental - Đã xử lý 0 bản ghi mới.
+2025-05-06 23:22:45,067 - hourly_etl - INFO - Bắt đầu ETL cho FactShowtimeFillRate
+2025-05-06 23:22:45,067 - root - INFO - Bắt đầu: etl_fact_showtime_fillrate_incremental (từ 2025-05-06 22:22:44.414382+00:00)
+2025-05-06 23:22:46,618 - root - WARNING - Showtime ID 190802 không có ghế nào (total=0), bỏ qua.
+2025-05-06 23:22:47,086 - root - WARNING - Showtime ID 190807 không tồn tại trong dim_showtime, bỏ qua.
+2025-05-06 23:22:47,553 - root - WARNING - Showtime ID 190808 không tồn tại trong dim_showtime, bỏ qua.
+2025-05-06 23:22:47,553 - root - INFO - Hoàn thành: etl_fact_showtime_fillrate_incremental - Đã xử lý 0 bản ghi mới.
+2025-05-06 23:22:47,553 - hourly_etl - INFO - Bắt đầu ETL cho FactPromotionAnalysis
+2025-05-06 23:22:47,553 - root - INFO - Bắt đầu: etl_fact_promotion_analysis_incremental (từ 2025-05-06 22:22:44.414382+00:00)
+2025-05-06 23:22:47,553 - root - INFO - Truy vấn bill_id sử dụng khuyến mãi từ lần ETL trước...
+2025-05-06 23:22:47,703 - root - INFO - Đã tìm thấy 0 bill_id mới đã dùng khuyến mãi.
+2025-05-06 23:22:47,870 - root - INFO - Hoàn thành: etl_fact_promotion_analysis_incremental - Đã xử lý 0 bản ghi mới.
+2025-05-06 23:22:51,834 - hourly_etl - INFO - Đã gửi email báo cáo ETL thành công đến danhhieu123ns@gmail.com
+2025-05-06 23:22:51,834 - hourly_etl - INFO - Kết thúc ETL (2025-05-06 23:22:51.834145). Thời gian thực hiện: 0:00:07.480264
+2025-05-06 23:23:39,917 - hourly_etl - INFO - Bắt đầu ETL cho dữ liệu 1 giờ trước (2025-05-06 23:23:39.917886)
+2025-05-06 23:23:40,043 - hourly_etl - INFO - Bắt đầu ETL cho FactTicketAnalysis
+2025-05-06 23:23:40,046 - root - INFO - Bắt đầu: etl_fact_ticket_analysis_incremental (từ 2025-05-06 22:23:39.979722+00:00)
+2025-05-06 23:23:40,475 - root - INFO - Hoàn thành: etl_fact_ticket_analysis_incremental - Đã xử lý 0 bản ghi mới.
+2025-05-06 23:23:40,475 - hourly_etl - INFO - Bắt đầu ETL cho FactFilmRating
+2025-05-06 23:23:40,477 - root - INFO - Bắt đầu: etl_fact_film_rating_incremental (từ 2025-05-06 22:23:39.979722+00:00)
+2025-05-06 23:23:40,484 - root - INFO - Hoàn thành: etl_fact_film_rating_incremental - Đã xử lý 0 bản ghi mới. Bỏ qua 0 bản ghi.
+2025-05-06 23:23:40,484 - hourly_etl - INFO - Bắt đầu ETL cho FactRevenue
+2025-05-06 23:23:40,485 - root - INFO - Bắt đầu: etl_fact_revenue_incremental (từ 2025-05-06 22:23:39.979722+00:00)
+2025-05-06 23:23:40,653 - root - INFO - Hoàn thành: etl_fact_revenue_incremental - Đã xử lý 0 bản ghi mới.
+2025-05-06 23:23:40,654 - hourly_etl - INFO - Bắt đầu ETL cho FactShowtimeFillRate
+2025-05-06 23:23:40,655 - root - INFO - Bắt đầu: etl_fact_showtime_fillrate_incremental (từ 2025-05-06 22:23:39.979722+00:00)
+2025-05-06 23:23:42,134 - root - WARNING - Showtime ID 190802 không có ghế nào (total=0), bỏ qua.
+2025-05-06 23:23:42,617 - root - WARNING - Showtime ID 190807 không tồn tại trong dim_showtime, bỏ qua.
+2025-05-06 23:23:43,066 - root - WARNING - Showtime ID 190808 không tồn tại trong dim_showtime, bỏ qua.
+2025-05-06 23:23:43,066 - root - INFO - Hoàn thành: etl_fact_showtime_fillrate_incremental - Đã xử lý 0 bản ghi mới.
+2025-05-06 23:23:43,066 - hourly_etl - INFO - Bắt đầu ETL cho FactPromotionAnalysis
+2025-05-06 23:23:43,066 - root - INFO - Bắt đầu: etl_fact_promotion_analysis_incremental (từ 2025-05-06 22:23:39.979722+00:00)
+2025-05-06 23:23:43,066 - root - INFO - Truy vấn bill_id sử dụng khuyến mãi từ lần ETL trước...
+2025-05-06 23:23:43,266 - root - INFO - Đã tìm thấy 0 bill_id mới đã dùng khuyến mãi.
+2025-05-06 23:23:43,426 - root - INFO - Hoàn thành: etl_fact_promotion_analysis_incremental - Đã xử lý 0 bản ghi mới.
+2025-05-06 23:23:47,659 - hourly_etl - INFO - Đã gửi email báo cáo ETL thành công đến ca.trantu@gmail.com
+2025-05-06 23:23:47,660 - hourly_etl - INFO - Kết thúc ETL (2025-05-06 23:23:47.660535). Thời gian thực hiện: 0:00:07.742649

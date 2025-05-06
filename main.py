@@ -22,7 +22,7 @@ from promotion.routers import promotion
 from bill_prom.routers import bill_prom
 from user_bill.routers import user_bill
 
-from scheduler import start_scheduler
+# from scheduler import start_scheduler
 import uvicorn
 
 
@@ -43,7 +43,7 @@ app.add_middleware(
 async def root():
     return {"message": "Hello World"}
 
-start_scheduler()
+# start_scheduler()
 
 app.router.include_router(role.router)
 app.router.include_router(user.router)

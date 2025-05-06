@@ -2,6 +2,8 @@ from sqlalchemy import Boolean, Column, Integer, String, text, Date
 from sqlalchemy.sql.sqltypes import TIMESTAMP
 from sqlalchemy.orm import relationship
 from configs.database import Base
+from film_genre.models.film_genre import FilmGenre
+from rate.models.rate import Rate
 
 
 class Film(Base):

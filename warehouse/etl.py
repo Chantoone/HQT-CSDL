@@ -1,8 +1,9 @@
 import logging
 from sqlalchemy.orm import sessionmaker, joinedload, selectinload
 from sqlalchemy.exc import SQLAlchemyError
-from datetime import datetime
+from datetime import datetime, timezone
 from warehouse.etl_metadata.utils.etl_metadata import get_last_loaded_time, update_last_loaded_time
+from warehouse.warehouse_models import DimShowtime
 
 
 BATCH_SIZE = 1000 # Có thể điều chỉnh
@@ -934,6 +935,11 @@ def etl_fact_showtime_fillrate_incremental(session_src, session_dest, ShowtimeSr
             logging.debug(f"Showtime ID {s.id}: Tổng ghế = {total}, Ghế đã đặt = {booked}")
             
             fill_rate = booked / total
+
+            dim_showtime_exists = session_dest.query(DimShowtime).filter_by(showtime_id=s.id).first()
+            if not dim_showtime_exists:
+                logging.warning(f"Showtime ID {s.id} không tồn tại trong dim_showtime, bỏ qua.")
+                continue
             
             # Tạo fact
             fact = FactShowtimeFillRate(
@@ -947,6 +953,14 @@ def etl_fact_showtime_fillrate_incremental(session_src, session_dest, ShowtimeSr
             session_dest.merge(fact)
             count += 1
             
+            if s.start_time is not None:
+                if s.start_time.tzinfo is None or s.start_time.tzinfo.utcoffset(s.start_time) is None:
+                    s.start_time = s.start_time.replace(tzinfo=timezone.utc)
+
+            if last_time is not None:
+                if last_time.tzinfo is None or last_time.tzinfo.utcoffset(last_time) is None:
+                    last_time = last_time.replace(tzinfo=timezone.utc)
+
             if s.start_time > max_time:
                 max_time = s.start_time
                 

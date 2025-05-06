@@ -2,6 +2,10 @@ from sqlalchemy import Boolean, Column, Integer, String, text, Date, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.sqltypes import TIMESTAMP
 from configs.database import Base
+from auth_credential.models.auth_credential import AuthCredential
+from user_role.models.user_role import UserRole
+from cinema.models.cinema import Cinema
+from user_bill.models.user_bill import UserBill
 
 
 class User(Base):
