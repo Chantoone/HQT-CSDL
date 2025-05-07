@@ -1,0 +1,38 @@
+﻿
+2025-05-07 10:33:16,537 - INFO - Đã đóng kết nối cơ sở dữ liệu
+2025-05-07 10:34:46,528 - INFO - Bắt đầu load dữ liệu vào Rating
+2025-05-07 10:34:46,644 - INFO - Đã có lỗi xảy ra -> not enough values to unpack (expected 5, got 4)
+2025-05-07 10:34:46,645 - INFO - Đã đóng kết nối cơ sở dữ liệu
+2025-05-07 10:35:24,617 - INFO - Bắt đầu load dữ liệu vào Rating
+2025-05-07 10:35:24,683 - INFO - Đã query 77 bản ghi , tiếp tục tiến hành load ...
+2025-05-07 10:35:24,757 - INFO - Dữ Liệu đã được load thành công !!
+2025-05-07 10:35:24,758 - INFO - Đã đóng kết nối cơ sở dữ liệu
+2025-05-07 11:00:26,194 - INFO - Bắt đầu load Top 5 phim doanh thu cao nhất
+2025-05-07 11:00:26,821 - INFO - Đã query 5 bản ghi , tiếp tục tiến hành load ...
+2025-05-07 11:00:26,880 - INFO - Dữ Liệu đã được load thành công !!
+2025-05-07 11:00:26,880 - INFO - Đã đóng kết nối cơ sở dữ liệu
+2025-05-07 11:02:49,850 - INFO - Bắt đầu load Top 5 phim doanh thu cao nhất
+2025-05-07 11:02:50,339 - INFO - Đã query 35 bản ghi , tiếp tục tiến hành load ...
+2025-05-07 11:02:50,379 - INFO - Dữ Liệu đã được load thành công !!
+2025-05-07 11:02:50,379 - INFO - Đã đóng kết nối cơ sở dữ liệu
+2025-05-07 11:13:05,731 - INFO - Bắt đầu truy vấn dữ liệu từ warehouse...
+2025-05-07 11:13:06,279 - INFO - Truy vấn thành công 7 bản ghi. Bắt đầu load theo batch...
+2025-05-07 11:13:06,331 - INFO - Đã ghi batch cuối: 7 bản ghi.
+2025-05-07 11:13:06,331 - INFO -  Hoàn tất ETL: tổng cộng 7 bản ghi đã được tải vào mart_revenue_by_month.
+2025-05-07 11:13:06,331 - INFO -  Đã đóng kết nối cơ sở dữ liệu.
+2025-05-07 11:13:06,331 - INFO -  Bắt đầu truy vấn dữ liệu khuyến mãi từ warehouse...
+2025-05-07 11:13:06,624 - INFO -  Truy vấn thành công 7 bản ghi. Bắt đầu load vào mart...
+2025-05-07 11:13:06,630 - INFO -  Đã ghi batch cuối: 7 bản ghi.
+2025-05-07 11:13:06,630 - INFO -  Hoàn tất ETL: đã tải 7 bản ghi vào mart_promotion_ratio_monthly.
+2025-05-07 11:13:06,630 - INFO -  Đã kết thúc job ETL khuyến mãi.
+2025-05-07 11:13:06,630 - INFO -  Bắt đầu ETL mart_payment_method_monthly...
+2025-05-07 11:13:06,899 - INFO -  Đã ghi batch cuối: 21 bản ghi.
+2025-05-07 11:13:06,900 - INFO -  Hoàn tất ETL: đã tải 21 bản ghi vào mart_payment_method_monthly.
+2025-05-07 11:13:06,900 - INFO - Bắt đầu load bảng CinemaRevenue
+2025-05-07 11:13:07,110 - INFO - Truy vấn thành công 63
+2025-05-07 11:13:07,118 - INFO - Đã load thành công 63 bản ghi vào mart_revenue_by_cinema.
+2025-05-07 11:13:07,119 - INFO - Đã đóng kết nối cơ sở dữ liệu
+2025-05-07 11:13:07,119 - INFO - Bắt đầu load dữ liệu vào Rating
+2025-05-07 11:13:07,134 - INFO - Đã query 77 bản ghi , tiếp tục tiến hành load ...
+2025-05-07 11:13:07,141 - INFO - Dữ Liệu đã được load thành công !!
+2025-05-07 11:13:07,141 - INFO - Đã đóng kết nối cơ sở dữ liệu

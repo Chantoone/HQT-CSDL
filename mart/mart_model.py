@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, Boolean, Date, ForeignKey, Float, DateTime
 from sqlalchemy.orm import relationship, declarative_base
 from sqlalchemy.sql import func
-
+from sqlalchemy import BigInteger
 Base = declarative_base()
 
 class MartRevenueByMonth(Base):
@@ -10,7 +10,7 @@ class MartRevenueByMonth(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     year = Column(Integer, nullable=False)
     month = Column(Integer, nullable=False)
-    total_revenue = Column(Integer, nullable=False)
+    total_revenue = Column(BigInteger, nullable=False)
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
 
 class MartTopFilmRevenue(Base):
@@ -19,7 +19,7 @@ class MartTopFilmRevenue(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     film_id = Column(Integer, nullable=False)
     film_title = Column(String, nullable=False)
-    total_revenue = Column(Integer, nullable=False)
+    total_revenue = Column(BigInteger, nullable=False)
     year = Column(Integer, nullable=False)
     month = Column(Integer, nullable=False)
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
@@ -51,7 +51,7 @@ class MartRevenueByCinema(Base):
     cinema_name = Column(String, nullable=False)
     year = Column(Integer, nullable=False)
     month = Column(Integer, nullable=False)
-    total_revenue = Column(Integer, nullable=False)
+    total_revenue = Column(BigInteger, nullable=False)
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
 class MartPaymentMethodMonthly(Base):
     __tablename__ = "mart_payment_method_monthly"
@@ -62,5 +62,16 @@ class MartPaymentMethodMonthly(Base):
     year = Column(Integer, nullable=False)
     month = Column(Integer, nullable=False)
     transaction_count = Column(Integer, nullable=False)
-    total_revenue = Column(Integer, nullable=False)
+    total_revenue = Column(BigInteger, nullable=False)
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+class MartPromotionRatioMonthly(Base):
+    __tablename__ = "mart_promotion_ratio_monthly"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    year = Column(Integer, nullable=False)
+    month = Column(Integer, nullable=False)
+    used_count = Column(Integer, nullable=False)
+    not_used_count = Column(Integer, nullable=False)
+    used_ratio = Column(Float, nullable=False)  # = used / (used + not_used)
+    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+

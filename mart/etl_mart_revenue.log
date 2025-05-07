@@ -1,0 +1,14 @@
+
+2025-05-07 01:58:36,085 - INFO -  Đã ghi batch cuối: 7 bản ghi.
+2025-05-07 01:58:36,085 - INFO -  Đã tải 7 bản ghi vào mart_revenue_by_month.
+2025-05-07 01:58:36,085 - INFO -  Đã đóng kết nối cơ sở dữ liệu.
+2025-05-07 02:00:41,332 - INFO -  Bắt đầu truy vấn dữ liệu từ warehouse...
+2025-05-07 02:00:41,527 - INFO -  Truy vấn thành công 7 bản ghi. Bắt đầu load theo batch...
+2025-05-07 02:00:41,561 - INFO -  Đã ghi batch cuối: 7 bản ghi.
+2025-05-07 02:00:41,561 - INFO -  Hoàn tất ETL: tổng cộng 7 bản ghi đã được tải vào mart_revenue_by_month.
+2025-05-07 02:00:41,561 - INFO -  Đã đóng kết nối cơ sở dữ liệu.
+2025-05-07 02:03:54,888 - INFO -  Bắt đầu truy vấn dữ liệu khuyến mãi từ warehouse...
+2025-05-07 02:03:55,233 - INFO -  Truy vấn thành công 7 bản ghi. Bắt đầu load vào mart...
+2025-05-07 02:03:55,271 - INFO -  Đã ghi batch cuối: 7 bản ghi.
+2025-05-07 02:03:55,271 - INFO -  Hoàn tất ETL: đã tải 7 bản ghi vào mart_promotion_ratio_monthly.
+2025-05-07 02:03:55,271 - INFO -  Đã kết thúc job ETL khuyến mãi.
