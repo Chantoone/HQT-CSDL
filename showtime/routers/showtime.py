@@ -300,11 +300,11 @@ def create_showtime(
             Showtime.name == showtime.name
         ).first()
 
-        if db_showtime:
-            return JSONResponse(
-                status_code=status.HTTP_409_CONFLICT,
-                content={"message": "Showtime already exists"}
-            )
+        # if db_showtime:
+        #     return JSONResponse(
+        #         status_code=status.HTTP_409_CONFLICT,
+        #         content={"message": "Showtime already exists"}
+        #     )
         
         film = db.query(Film).filter(Film.id == showtime.film_id).first()
         if not film:

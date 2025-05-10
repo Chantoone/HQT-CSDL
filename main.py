@@ -21,8 +21,8 @@ from bill.routers import bill
 from promotion.routers import promotion
 from bill_prom.routers import bill_prom
 from user_bill.routers import user_bill
-
-# from scheduler import start_scheduler
+from mart.router import router as mart_router
+from scheduler import start_scheduler
 import uvicorn
 
 
@@ -66,7 +66,7 @@ app.router.include_router(promotion.router)
 app.router.include_router(bill_prom.router)
 app.router.include_router(user_bill.router)
 
-
+app.router.include_router(mart_router)
 
 
 # if __name__ == "__main__":

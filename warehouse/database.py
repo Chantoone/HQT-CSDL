@@ -5,4 +5,4 @@ from warehouse_models import Base
 engine = create_engine("postgresql://postgres:admin@localhost:5433/ware_house")
 
 # Tạo tất cả bảng
-Base.metadata.create_all(engine)
+# Base.metadata.create_all(engine)
